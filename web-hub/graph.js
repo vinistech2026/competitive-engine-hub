@@ -85,7 +85,11 @@ function initVisNetwork(app) {
   expandedNodes.add('bhaskar_core');
   expandedNodes.add('windy_core');
   expandedNodes.add('drik_core');
-  expandedNodes.add(`root_${safeId}`);
+  expandedNodes.add('root_' + safeId);
+  expandedNodes.add('ui_' + safeId);
+  expandedNodes.add('api_cluster_' + safeId);
+  expandedNodes.add('wall_cluster_' + safeId);
+  expandedNodes.add('open_cluster_' + safeId);
 
   renderVisGraph(container);
 }
@@ -476,111 +480,133 @@ function getBhaskarGraphData() {
 
 // 4. Generic Autonomous Knowledge Data
 function getGenericGraphData(app, safeId) {
-  const rootId = `root_${safeId}`;
+  const rootId = 'root_' + safeId;
   const name = app.name || 'Target App';
   const category = app.category || 'Web Application';
-  const catchText = app.commercialCatch || 'Proprietary Cloud & Operations';
-  const stackText = app.openStack || 'Modern Open Source Primitives';
+  const md = app.deepDossierContent || '';
   const parity = app.parity || 75;
   const market = app.marketIndex || '85% (High)';
 
+  // Extract real entities dynamically from the dossier markdown
+  const rawHubs = [...md.matchAll(/-\s*\*Hub\s*\d+:[\*\s]*([^\n\r]+)/gi)].map(m => m[1].replace(/\*+/g, '').trim());
+  const rawApis = [...md.matchAll(/-\s*`([A-Z0-9_/\:\-\s\.]+)`/gi)].map(m => m[1].trim()).filter(a => a.startsWith('GET') || a.startsWith('POST') || a.startsWith('WSS') || a.startsWith('WS'));
+  const rawWalls = [...md.matchAll(/\d+\.\s*\*\*Commercial Wall\s*\d+[^:]*:[\*\s]*([^\n\r]+)/gi)].map(m => m[1].replace(/\*+/g, '').trim());
+  
+  // Extract open stack components
+  const rawStack = (app.openStack || '').split('+').map(s => s.trim()).filter(Boolean);
+
+  const hubs = rawHubs.length > 0 ? rawHubs.slice(0, 5) : ['Catalog / Feeds', 'Interactive Engine', 'Search & Filters', 'Analytics', 'Settings'];
+  const apis = rawApis.length > 0 ? rawApis.slice(0, 4) : ['GET /api/v1/bootstrap', 'GET /api/v1/feed', 'POST /api/v1/action'];
+  const walls = rawWalls.length > 0 ? rawWalls.slice(0, 4) : [app.commercialCatch || 'Proprietary Cloud Services'];
+  const stackItems = rawStack.length > 0 ? rawStack.slice(0, 4) : ['HTML5 + CSS Grid', 'Vanilla JS / Vite', 'Serverless APIs', 'Embedded SQLite'];
+
   const nodes = [
-    // God Node (Center)
+    // God Node (Center of Gravity)
     { 
       id: rootId, 
-      label: `⚡ ${name}\n[${category}]`, 
+      label: '⚡ ' + name + '\n[' + category + ']', 
       type: 'god', 
       level: 0,
-      tooltip: `${name} • Core Ecosystem God Node`
+      tooltip: name + ' • Core Ecosystem God Node'
     },
 
-    // Cluster 1: Presentation & User Experience (Blue)
+    // Cluster 1: Presentation & Navigational Hubs (Blue)
     { 
-      id: `ui_${safeId}`, 
-      label: `Client Interface Layer\n${wrapText(app.url || 'Web Client', 24)}`, 
+      id: 'ui_' + safeId, 
+      label: 'Client Interface Layer\n' + wrapText(app.url || 'Web Client', 24), 
       type: 'target', 
       level: 1 
     },
+
+    // Cluster 2: Production Endpoints & Network Topology (Cyan / Teal)
     { 
-      id: `ui_nav_${safeId}`, 
-      label: 'Adaptive Navigation & Search\n[Debounced Instant Autocomplete]', 
+      id: 'api_cluster_' + safeId, 
+      label: 'Production APIs & Subdomains\n[Network Footprint]', 
       type: 'target', 
-      level: 2 
-    },
-    { 
-      id: `ui_pdp_${safeId}`, 
-      label: 'Interactive Detail Engine\n[Optimistic Cart & Care Matrix]', 
-      type: 'target', 
-      level: 2 
+      level: 1 
     },
 
-    // Cluster 2: Commercial Wall & Moat (Red / Amber)
+    // Cluster 3: The 4 Commercial Walls (Red / Rose)
     { 
-      id: `wall_cluster_${safeId}`, 
-      label: `Commercial Moat\n[Enterprise Barrier]`, 
+      id: 'wall_cluster_' + safeId, 
+      label: 'The 4 Commercial Walls\n[Enterprise Moats in ₹]', 
       type: 'proprietary', 
       level: 1 
     },
-    { 
-      id: `wall_detail_${safeId}`, 
-      label: `The Core Catch:\n${wrapText(catchText, 26)}`, 
-      type: 'proprietary', 
-      level: 2 
-    },
-    { 
-      id: `wall_cdn_${safeId}`, 
-      label: 'Multi-CDN & Egress Fees\n[₹3,00,000 - ₹8,00,000/mo]', 
-      type: 'proprietary', 
-      level: 2 
-    },
 
-    // Cluster 3: Zero-Cost Open Equivalent Stack (Green)
+    // Cluster 4: Zero-Cost Open Stack (Emerald Green)
     { 
-      id: `open_cluster_${safeId}`, 
-      label: `Zero-Cost Open Stack\n[₹0.00 / mo Runway]`, 
+      id: 'open_cluster_' + safeId, 
+      label: 'Zero-Cost Clean-Room Stack\n[₹0.00 Runway]', 
       type: 'opensource', 
       level: 1 
     },
-    { 
-      id: `open_frontend_${safeId}`, 
-      label: 'Vanilla JS / Astro SSR\n[< 15 MB RAM • E6220 Safe]', 
-      type: 'opensource', 
-      level: 2 
-    },
-    { 
-      id: `open_backend_${safeId}`, 
-      label: `Serverless Core:\n${wrapText(stackText, 24)}`, 
-      type: 'opensource', 
-      level: 2 
-    },
 
-    // Cluster 4: Parity & Financial Index (Gold / Orange)
+    // Cluster 5: Parity & Financial Index (Amber Gold)
     { 
-      id: `metric_${safeId}`, 
-      label: `Overall Parity: ${parity}%\nMarket Index: ${market}\nRunway: ₹0.00 / mo`, 
+      id: 'metric_' + safeId, 
+      label: 'Overall Parity: ' + parity + '%\nMarket Index: ' + market + '\nRunway: ₹0.00 / mo', 
       type: 'metric', 
       level: 1 
     }
   ];
 
   const edges = [
-    // Primary Cluster Connections from God Node
-    { from: rootId, to: `ui_${safeId}`, label: 'renders' },
-    { from: rootId, to: `wall_cluster_${safeId}`, label: 'constrained by' },
-    { from: rootId, to: `open_cluster_${safeId}`, label: 'reproducible via' },
-    { from: rootId, to: `metric_${safeId}`, label: 'evaluated as' },
-
-    // Sub-cluster Edges
-    { from: `ui_${safeId}`, to: `ui_nav_${safeId}`, label: 'includes' },
-    { from: `ui_${safeId}`, to: `ui_pdp_${safeId}`, label: 'features' },
-    { from: `wall_cluster_${safeId}`, to: `wall_detail_${safeId}`, label: 'demands' },
-    { from: `wall_cluster_${safeId}`, to: `wall_cdn_${safeId}`, label: 'incurs' },
-    { from: `open_cluster_${safeId}`, to: `open_frontend_${safeId}`, label: 'uses' },
-    { from: `open_cluster_${safeId}`, to: `open_backend_${safeId}`, label: 'deploys' },
-
-    // Cross-link Bridge: Open Stack replaces Commercial Wall
-    { from: `open_cluster_${safeId}`, to: `wall_cluster_${safeId}`, label: 'replaces (₹0)' }
+    { from: rootId, to: 'ui_' + safeId, label: 'renders' },
+    { from: rootId, to: 'api_cluster_' + safeId, label: 'calls' },
+    { from: rootId, to: 'wall_cluster_' + safeId, label: 'constrained by' },
+    { from: rootId, to: 'open_cluster_' + safeId, label: 'reproduced by' },
+    { from: rootId, to: 'metric_' + safeId, label: 'evaluated as' },
+    { from: 'open_cluster_' + safeId, to: 'wall_cluster_' + safeId, label: 'replaces (₹0)' }
   ];
+
+  // Dynamically attach Navigational Hub children
+  hubs.forEach((hub, i) => {
+    const hubId = 'hub_' + i + '_' + safeId;
+    nodes.push({
+      id: hubId,
+      label: 'Hub ' + (i + 1) + ':\n' + wrapText(hub, 20),
+      type: 'target',
+      level: 2
+    });
+    edges.push({ from: 'ui_' + safeId, to: hubId, label: 'section' });
+  });
+
+  // Dynamically attach API Endpoint children
+  apis.forEach((ep, i) => {
+    const epId = 'ep_' + i + '_' + safeId;
+    nodes.push({
+      id: epId,
+      label: wrapText(ep, 24),
+      type: 'target',
+      level: 2
+    });
+    edges.push({ from: 'api_cluster_' + safeId, to: epId, label: 'endpoint' });
+  });
+
+  // Dynamically attach Commercial Wall children
+  walls.forEach((wall, i) => {
+    const wallNodeId = 'wall_item_' + i + '_' + safeId;
+    nodes.push({
+      id: wallNodeId,
+      label: 'Wall ' + (i + 1) + ':\n' + wrapText(wall, 24),
+      type: 'proprietary',
+      level: 2
+    });
+    edges.push({ from: 'wall_cluster_' + safeId, to: wallNodeId, label: 'moat' });
+  });
+
+  // Dynamically attach Open Stack children
+  stackItems.forEach((item, i) => {
+    const stackNodeId = 'stack_item_' + i + '_' + safeId;
+    nodes.push({
+      id: stackNodeId,
+      label: wrapText(item, 24),
+      type: 'opensource',
+      level: 2
+    });
+    edges.push({ from: 'open_cluster_' + safeId, to: stackNodeId, label: 'primitive' });
+  });
 
   return { nodes, edges };
 }
