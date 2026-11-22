@@ -22,6 +22,33 @@ function formatINR(text) {
     .replace(/\$/g, "₹");
 }
 
+// Smart line breaker to keep node labels compact and prevent giant stretching
+function wrapText(str, maxChars = 28) {
+  if (!str) return "";
+  const words = str.split(' ');
+  const lines = [];
+  let currentLine = '';
+
+  for (const w of words) {
+    if (w.includes('\n')) {
+      const parts = w.split('\n');
+      currentLine += (currentLine ? ' ' : '') + parts[0];
+      lines.push(currentLine);
+      currentLine = parts[1] || '';
+      continue;
+    }
+    if ((currentLine + ' ' + w).trim().length > maxChars) {
+      if (currentLine) lines.push(currentLine);
+      currentLine = w;
+    } else {
+      currentLine += (currentLine ? ' ' : '') + w;
+    }
+  }
+  if (currentLine) lines.push(currentLine);
+  return lines.join('\n');
+}
+
+
 function initCytoscape(app) {
   // Alias for backward compatibility; launches vis-network
   initVisNetwork(app);
@@ -118,7 +145,7 @@ function renderVisGraph(container) {
 
     visNodes.push({
       id: n.id,
-      label: formatINR(n.label) + expandIndicator,
+      label: wrapText(formatINR(n.label), 28) + expandIndicator,
       title: n.tooltip ? formatINR(n.tooltip) : formatINR(n.label),
       shape: shape,
       size: size,
@@ -175,9 +202,9 @@ function renderVisGraph(container) {
     physics: {
       enabled: true,
       barnesHut: {
-        gravitationalConstant: -4000,
-        centralGravity: 0.35,
-        springLength: 120,
+        gravitationalConstant: -7000,
+        centralGravity: 0.25,
+        springLength: 160,
         springConstant: 0.04,
         damping: 0.12,
         avoidOverlap: 0.4
@@ -450,25 +477,112 @@ function getBhaskarGraphData() {
 // 4. Generic Autonomous Knowledge Data
 function getGenericGraphData(app, safeId) {
   const rootId = `root_${safeId}`;
-  const uiId = `ui_${safeId}`;
-  const wallId = `wall_${safeId}`;
-  const openId = `open_${safeId}`;
-  const metricId = `metric_${safeId}`;
+  const name = app.name || 'Target App';
+  const category = app.category || 'Web Application';
+  const catchText = app.commercialCatch || 'Proprietary Cloud & Operations';
+  const stackText = app.openStack || 'Modern Open Source Primitives';
+  const parity = app.parity || 75;
+  const market = app.marketIndex || '85% (High)';
 
   const nodes = [
-    { id: rootId, label: `⚡ ${app.name || 'Target Application'}\n(${app.category || 'Web Application'})`, type: 'god', level: 0 },
-    { id: uiId, label: `Client Presentation Layer\n(${app.url || 'Web Client'})`, type: 'target', level: 1 },
-    { id: wallId, label: `Commercial Wall:\n${formatINR(app.commercialCatch || 'Proprietary Cloud Services')}`, type: 'proprietary', level: 1 },
-    { id: openId, label: `Zero-Cost Alternative:\n${formatINR(app.openStack || 'Open-Source Primitives')}`, type: 'opensource', level: 2 },
-    { id: metricId, label: `Overall Parity: ${app.parity || 75}%\nMarket Index: ${app.marketIndex || 'High'}\nRunway: ₹0.00 / mo`, type: 'metric', level: 1 }
+    // God Node (Center)
+    { 
+      id: rootId, 
+      label: `⚡ ${name}\n[${category}]`, 
+      type: 'god', 
+      level: 0,
+      tooltip: `${name} • Core Ecosystem God Node`
+    },
+
+    // Cluster 1: Presentation & User Experience (Blue)
+    { 
+      id: `ui_${safeId}`, 
+      label: `Client Interface Layer\n${wrapText(app.url || 'Web Client', 24)}`, 
+      type: 'target', 
+      level: 1 
+    },
+    { 
+      id: `ui_nav_${safeId}`, 
+      label: 'Adaptive Navigation & Search\n[Debounced Instant Autocomplete]', 
+      type: 'target', 
+      level: 2 
+    },
+    { 
+      id: `ui_pdp_${safeId}`, 
+      label: 'Interactive Detail Engine\n[Optimistic Cart & Care Matrix]', 
+      type: 'target', 
+      level: 2 
+    },
+
+    // Cluster 2: Commercial Wall & Moat (Red / Amber)
+    { 
+      id: `wall_cluster_${safeId}`, 
+      label: `Commercial Moat\n[Enterprise Barrier]`, 
+      type: 'proprietary', 
+      level: 1 
+    },
+    { 
+      id: `wall_detail_${safeId}`, 
+      label: `The Core Catch:\n${wrapText(catchText, 26)}`, 
+      type: 'proprietary', 
+      level: 2 
+    },
+    { 
+      id: `wall_cdn_${safeId}`, 
+      label: 'Multi-CDN & Egress Fees\n[₹3,00,000 - ₹8,00,000/mo]', 
+      type: 'proprietary', 
+      level: 2 
+    },
+
+    // Cluster 3: Zero-Cost Open Equivalent Stack (Green)
+    { 
+      id: `open_cluster_${safeId}`, 
+      label: `Zero-Cost Open Stack\n[₹0.00 / mo Runway]`, 
+      type: 'opensource', 
+      level: 1 
+    },
+    { 
+      id: `open_frontend_${safeId}`, 
+      label: 'Vanilla JS / Astro SSR\n[< 15 MB RAM • E6220 Safe]', 
+      type: 'opensource', 
+      level: 2 
+    },
+    { 
+      id: `open_backend_${safeId}`, 
+      label: `Serverless Core:\n${wrapText(stackText, 24)}`, 
+      type: 'opensource', 
+      level: 2 
+    },
+
+    // Cluster 4: Parity & Financial Index (Gold / Orange)
+    { 
+      id: `metric_${safeId}`, 
+      label: `Overall Parity: ${parity}%\nMarket Index: ${market}\nRunway: ₹0.00 / mo`, 
+      type: 'metric', 
+      level: 1 
+    }
   ];
 
   const edges = [
-    { from: rootId, to: uiId, label: 'presents UI' },
-    { from: uiId, to: wallId, label: 'locked by' },
-    { from: wallId, to: openId, label: 'replaced by' },
-    { from: openId, to: metricId, label: 'yields parity' }
+    // Primary Cluster Connections from God Node
+    { from: rootId, to: `ui_${safeId}`, label: 'renders' },
+    { from: rootId, to: `wall_cluster_${safeId}`, label: 'constrained by' },
+    { from: rootId, to: `open_cluster_${safeId}`, label: 'reproducible via' },
+    { from: rootId, to: `metric_${safeId}`, label: 'evaluated as' },
+
+    // Sub-cluster Edges
+    { from: `ui_${safeId}`, to: `ui_nav_${safeId}`, label: 'includes' },
+    { from: `ui_${safeId}`, to: `ui_pdp_${safeId}`, label: 'features' },
+    { from: `wall_cluster_${safeId}`, to: `wall_detail_${safeId}`, label: 'demands' },
+    { from: `wall_cluster_${safeId}`, to: `wall_cdn_${safeId}`, label: 'incurs' },
+    { from: `open_cluster_${safeId}`, to: `open_frontend_${safeId}`, label: 'uses' },
+    { from: `open_cluster_${safeId}`, to: `open_backend_${safeId}`, label: 'deploys' },
+
+    // Cross-link Bridge: Open Stack replaces Commercial Wall
+    { from: `open_cluster_${safeId}`, to: `wall_cluster_${safeId}`, label: 'replaces (₹0)' }
   ];
 
   return { nodes, edges };
 }
+
+
