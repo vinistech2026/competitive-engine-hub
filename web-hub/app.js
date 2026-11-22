@@ -14,12 +14,12 @@ const KNOWN_DOSSIERS = {
     url: "https://www.drikpanchang.com/",
     parity: 70,
     marketIndex: "94% (Very High)",
-    commercialCatch: "10,000+ Dharmasindhu liturgical rules & Swiss Ephemeris commercial license ($700+)",
+    commercialCatch: "10,000+ Dharmasindhu liturgical rules & Swiss Ephemeris commercial license (₹58,000+)",
     openStack: "pyswisseph / astronomy-engine (MIT) + sanskrit-coders/jyotisha + Pure 2D SVG Charts",
     briefing: {
       verdict: "GO • 70% Parity Feasible",
       summary: "Mathematical ephemeris and planetary limbs are 100% solvable in Python/JS. The true moat is 10,000+ Dharmasindhu liturgical rules for multi-condition festival arbitrations.",
-      catch: "Swiss Ephemeris commercial license ($700+) & 10+ years of codified Dharmasindhu/Nirnayasindhu festival decision trees.",
+      catch: "Swiss Ephemeris commercial license (₹58,000+) & 10+ years of codified Dharmasindhu/Nirnayasindhu festival decision trees.",
       stack: [
         "pyswisseph (GPLv2) or astronomy-engine (MIT): Sub-arcsecond planetary coordinates",
         "sanskrit-coders/jyotisha: Open-source Vedic festival & Vrat rule engine",
@@ -35,7 +35,7 @@ const KNOWN_DOSSIERS = {
 - **Target URL:** \`https://www.drikpanchang.com/\`
 - **Niche Category:** Vedic Astrology, Hindu Calendar & Astronomical Ephemeris
 - **Core Architecture:** Drik Ganita (optical planetary observation algorithms) + Swiss Ephemeris (C-lib) + Dharmasindhu liturgical engine
-- **The Real Commercial Wall:** Swiss Ephemeris commercial license fees ($700+) + 10,000+ classical Vedic festival rules (Smartha vs Vaishnava, Arunodaya contamination)
+- **The Real Commercial Wall:** Swiss Ephemeris commercial license fees (₹58,000+) + 10,000+ classical Vedic festival rules (Smartha vs Vaishnava, Arunodaya contamination)
 - **Zero-Cost Open Stack:** \`pyswisseph\` (GPLv2) or \`astronomy-engine\` (MIT) + \`sanskrit-coders/jyotisha\` + Pure 2D SVG Charts
 - **Realistic Parity Score:** **70%** (100% of mathematics & charts; 55% of localized community festival rules)
 - **Market Viability Index:** **94% (Very High)** — Authoritative global standard for Indian diaspora
@@ -93,8 +93,8 @@ const KNOWN_DOSSIERS = {
 | :--- | :--- |
 | **Realistic Clean-Room Parity** | **80%** *(100% of Atmospheric Telemetry & Global Meshes; 70% of Proprietary High-Resolution Shaders)* |
 | **Market Viability Index** | **94% (Very High)** — Global gold standard for aviators, maritime sailors, storm chasers, and outdoors |
-| **Monthly Infrastructure Cost** | **$0.00 / INR 0** (Voroa Mumbai Nano / Cloudflare Pages + Public NOAA NOMADS & Open-Meteo) |
-| **Primary Commercial Wall** | **ECMWF HRES 0.1° ($15,000+/year) + Proprietary \`@leafletGl\` WebGL 2.0 Bilinear Wind Streamline Particle Engine** |
+| **Monthly Infrastructure Cost** | **₹0.00 / INR 0** (Voroa Mumbai Nano / Cloudflare Pages + Public NOAA NOMADS & Open-Meteo) |
+| **Primary Commercial Wall** | **ECMWF HRES 0.1° (₹12,50,000+/year) + Proprietary \`@leafletGl\` WebGL 2.0 Bilinear Wind Streamline Particle Engine** |
 | **Zero-Cost Open-Source Stack** | **\`Leaflet.js\` + \`leaflet-velocity\` (2D Canvas Interpolation) + Open-Meteo GFS/ICON APIs + NOAA GRIB2** |
 
 ---
@@ -153,12 +153,12 @@ Direct live header, prefetch, and asset inspection of \`https://www.windy.com/\`
 
 | Layer | Windy Commercial Stack | Zero-Cost Open Equivalent |
 | :--- | :--- | :--- |
-| **Weather Telemetry API** | Proprietary ECMWF HRES feeds ($15,000+/yr) | **Open-Meteo GFS & ICON APIs** (10,000 free requests/day, sub-second latency) |
+| **Weather Telemetry API** | Proprietary ECMWF HRES feeds (₹12,50,000+/yr) | **Open-Meteo GFS & ICON APIs** (10,000 free requests/day, sub-second latency) |
 | **Radar & Doppler Tiles** | \`rdr.windy.com\` proprietary radar pipeline | **RainViewer API v2** (Free 10-minute precipitation radar tiles globally) |
 | **Satellite Imagery** | \`sat.windy.com\` EUMETSAT downlink | **NOAA GOES & EUMETSAT open public web tiles** |
 | **Vector Particle Engine** | \`@leafletGl\` WebGL custom shaders | **\`leaflet-velocity\` (MIT, pure 2D Canvas particles)** |
 | **Basemap Tiles** | Custom dark/light CartoDB vector basemaps | **CartoDB Dark Matter / OpenStreetMap tiles (Free)** |
-| **Hosting & CDN** | Multi-region custom proxy edge | **Voroa Mumbai Nano ($0.00) / Cloudflare Pages** |
+| **Hosting & CDN** | Multi-region custom proxy edge | **Voroa Mumbai Nano (₹0.00) / Cloudflare Pages** |
     `
   }
 };
