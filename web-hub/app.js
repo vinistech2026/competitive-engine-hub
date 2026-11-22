@@ -1,3 +1,4 @@
+const STUDIO_BRIDGE_URL = "http://127.0.0.1:20129/api/deconstruct";
 // Apple-Grade 2026 Competitive Studio Core Logic
 // Integrated with Master Google Sheet + Live Autonomous Multi-Tier Audits
 
@@ -1316,33 +1317,54 @@ async function triggerAutonomousDeconstruction(rawTarget, notes = "") {
       fullUrl = `https://www.${domain}`;
     }
 
-    const taxonomy = inferNicheTaxonomy(rawTarget);
-    const category = taxonomy.category;
-    const commercialCatch = taxonomy.commercialCatch;
-    const openStack = taxonomy.openStack;
-    const parity = taxonomy.parity;
-    const marketIndex = taxonomy.marketIndex;
+    let newAudit = null;
 
-    const auditSlug = domain.replace(/[^a-z0-9]/gi, '-').toLowerCase();
-    const knownAudit = findKnownDossier(auditSlug) || findKnownDossier(appName) || findKnownDossier(fullUrl);
+    // Phase 1: Attempt Live AI Dynamic Ingestion via Local Studio Bridge
+    try {
+      if (progressText) progressText.innerText = `Ingesting live DOM & AI deconstruction for "${cleanInput}"...`;
+      const bridgeRes = await fetch(STUDIO_BRIDGE_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ targetUrl: fullUrl })
+      });
+      if (bridgeRes.ok) {
+        newAudit = await bridgeRes.json();
+        console.log("[Studio Engine] AI Live Deconstruction Success:", newAudit.name, newAudit.category);
+      }
+    } catch (bridgeErr) {
+      console.warn("[Studio Engine] Studio Bridge offline or unreachable, using client engine:", bridgeErr.message);
+    }
 
-    const newAudit = {
-      id: auditSlug,
-      category: knownAudit ? knownAudit.category : category,
-      name: knownAudit ? knownAudit.name : appName,
-      url: fullUrl,
-      parity: knownAudit ? knownAudit.parity : parity,
-      marketIndex: knownAudit ? knownAudit.marketIndex : marketIndex,
-      commercialCatch: knownAudit ? knownAudit.commercialCatch : commercialCatch,
-      openStack: knownAudit ? knownAudit.openStack : openStack,
-      briefing: knownAudit ? knownAudit.briefing : {
-        verdict: `GO • ${parity}% Parity Feasible`,
-        summary: `Autonomous deconstruction shows clean-room reproduction feasible for ₹0 runway.`,
-        catch: commercialCatch,
-        stack: openStack.split('+').map(s => s.trim())
-      },
-      deepDossierContent: knownAudit ? knownAudit.deepDossierContent : generateAutonomousLowestLevelDossier(appName, fullUrl, category, commercialCatch, openStack, parity, marketIndex)
-    };
+    // Phase 2: Client-side dynamic fallback if bridge is offline
+    if (!newAudit) {
+      const taxonomy = inferNicheTaxonomy(rawTarget);
+      const category = taxonomy.category;
+      const commercialCatch = taxonomy.commercialCatch;
+      const openStack = taxonomy.openStack;
+      const parity = taxonomy.parity;
+      const marketIndex = taxonomy.marketIndex;
+
+      const auditSlug = domain.replace(/[^a-z0-9]/gi, '-').toLowerCase();
+      const knownAudit = findKnownDossier(auditSlug) || findKnownDossier(appName) || findKnownDossier(fullUrl);
+
+      newAudit = {
+        id: auditSlug,
+        category: knownAudit ? knownAudit.category : category,
+        name: knownAudit ? knownAudit.name : appName,
+        url: fullUrl,
+        parity: knownAudit ? knownAudit.parity : parity,
+        marketIndex: knownAudit ? knownAudit.marketIndex : marketIndex,
+        commercialCatch: knownAudit ? knownAudit.commercialCatch : commercialCatch,
+        openStack: knownAudit ? knownAudit.openStack : openStack,
+        briefing: knownAudit ? knownAudit.briefing : {
+          verdict: `GO • ${parity}% Parity Feasible`,
+          summary: `Autonomous deconstruction shows clean-room reproduction feasible for ₹0 runway.`,
+          catch: commercialCatch,
+          stack: openStack.split('+').map(s => s.trim())
+        },
+        deepDossierContent: knownAudit ? knownAudit.deepDossierContent : generateAutonomousLowestLevelDossier(appName, fullUrl, category, commercialCatch, openStack, parity, marketIndex)
+      };
+    }
 
     audits = [newAudit, ...audits.filter(a => a.id !== newAudit.id)];
     refreshCategoryPills();
