@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Competitive Engine Hub • Studio</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Cytoscape 2D Canvas Engine -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.28.1/cytoscape.min.js"></script>
+  <!-- vis-network Organic Physics Graph Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.9/dist/vis-network.min.js"></script>
 </head>
 <body>
   <div class="app-viewport">
@@ -59,8 +59,8 @@
     <section class="bento-stats-container">
       <div class="bento-card">
         <span class="bento-label">TARGETS AUDITED</span>
-        <div class="bento-value" id="stat-total">1</div>
-        <span class="bento-subtext" id="stat-niche-count">Across 1 Niche</span>
+        <div class="bento-value" id="stat-total">2</div>
+        <span class="bento-subtext" id="stat-niche-count">Across 2 Niches</span>
       </div>
       <div class="bento-card">
         <span class="bento-label">AVG TECH PARITY</span>
@@ -69,7 +69,7 @@
       </div>
       <div class="bento-card">
         <span class="bento-label">ESTIMATED RUNWAY</span>
-        <div class="bento-value text-accent-blue">$0.00</div>
+        <div class="bento-value text-accent-blue">₹0.00</div>
         <span class="bento-subtext">100% Free Tiers Exclusively</span>
       </div>
       <div class="bento-card">
@@ -83,7 +83,7 @@
     <nav class="category-pill-bar">
       <div class="primary-pills" id="dynamicPrimaryPills">
         <button class="pill-btn active" data-category="ALL" onclick="filterCategory('ALL')">
-          All Targets <span class="pill-count" id="count-all">1</span>
+          All Targets <span class="pill-count" id="count-all">2</span>
         </button>
       </div>
 
@@ -118,7 +118,7 @@
       </div>
     </main>
 
-    <!-- Floating Resizable Graphify Window -->
+    <!-- Floating Draggable & Resizable Graphify Window -->
     <div class="floating-window" id="graphWindow">
       <div class="window-header" id="windowHeader">
         <div class="window-traffic-lights">
@@ -126,9 +126,9 @@
           <span class="light minimize" onclick="toggleGraphWindowSize()" title="Toggle Size"></span>
           <span class="light maximize" onclick="maximizeGraphWindow()" title="Maximize"></span>
         </div>
-        <span class="window-title" id="graphWindowTitle">🕸️ Graphify Architecture Visualizer</span>
+        <span class="window-title" id="graphWindowTitle">🕸️ Graphify Knowledge Universe</span>
         <div class="window-header-actions">
-          <span class="badge-tag">Static DAG • Zero Bounce</span>
+          <span class="badge-tag">Organic Physics • Click to Expand</span>
         </div>
       </div>
 
@@ -138,17 +138,22 @@
           <input type="text" id="graphNodeSearch" placeholder="Find node in graph..." oninput="searchGraphNode(this.value)">
         </div>
         <div class="graph-controls">
-          <button class="btn-ctrl" onclick="zoomGraph(1.2)" title="Zoom In">＋</button>
-          <button class="btn-ctrl" onclick="zoomGraph(0.8)" title="Zoom Out">－</button>
-          <button class="btn-ctrl" onclick="fitGraph()" title="Fit to View">⛶ Fit</button>
-          <button class="btn-ctrl" onclick="resetGraphLayout()" title="Re-align">↺ Reset</button>
+          <button class="btn-ctrl" onclick="zoomGraph(1.3)" title="Zoom In">＋</button>
+          <button class="btn-ctrl" onclick="zoomGraph(0.7)" title="Zoom Out">－</button>
+          <button class="btn-ctrl" onclick="fitGraph()" title="Fit to View">⛶ Fit Center</button>
+          <button class="btn-ctrl" onclick="resetGraphPhysics()" title="Re-stabilize">↺ Settle</button>
         </div>
       </div>
 
       <div class="window-body">
-        <div id="cy" class="cy-viewport"></div>
+        <div id="visNetwork" class="vis-viewport"></div>
+        <div class="node-info-bar" id="nodeInfoBar" style="display:none;">
+          <span id="nodeInfoText">Click a node to inspect details</span>
+          <button class="node-info-close" onclick="closeNodeInfo()">✕</button>
+        </div>
         <div class="window-legend">
-          <span class="legend-item"><span class="dot target"></span> Target App</span>
+          <span class="legend-item"><span class="dot god"></span> God Node</span>
+          <span class="legend-item"><span class="dot target"></span> Subsystem</span>
           <span class="legend-item"><span class="dot proprietary"></span> Commercial Wall</span>
           <span class="legend-item"><span class="dot opensource"></span> Zero-Cost Alternative</span>
           <span class="legend-item"><span class="dot metric"></span> Metric / Parity</span>
@@ -164,7 +169,7 @@
       <div class="drawer-header">
         <div class="drawer-title-group">
           <span class="badge-pill" id="drawerCategory">Geospatial</span>
-          <h2 id="drawerTitle">MSN Weather Maps</h2>
+          <h2 id="drawerTitle">Application Dossier</h2>
         </div>
         <button class="drawer-close-btn" onclick="closeDocDrawer()">✕</button>
       </div>
@@ -179,42 +184,38 @@
         <div class="drawer-pane active" id="paneBriefing">
           <div class="briefing-card verdict-box">
             <span class="verdict-label">EXECUTIVE VERDICT</span>
-            <div class="verdict-status" id="briefingVerdict">GO • 75% Parity Feasible</div>
-            <p id="briefingSummary">Clean-room reproduction achievable at zero infrastructure cost. Core limitation is continuous multi-zoom temperature heatmaps.</p>
+            <div class="verdict-status" id="briefingVerdict">GO • 80% Parity Feasible</div>
+            <p id="briefingSummary">Clean-room reproduction achievable at zero infrastructure cost.</p>
           </div>
 
           <div class="briefing-grid">
             <div class="micro-stat">
               <span class="stat-lbl">Feasibility</span>
-              <span class="stat-val text-accent-green" id="briefingParity">75%</span>
+              <span class="stat-val text-accent-green" id="briefingParity">80%</span>
             </div>
             <div class="micro-stat">
               <span class="stat-lbl">Market Viability</span>
-              <span class="stat-val text-accent-blue" id="briefingMarket">88% (High)</span>
+              <span class="stat-val text-accent-blue" id="briefingMarket">94% (Very High)</span>
             </div>
             <div class="micro-stat">
               <span class="stat-lbl">Monthly Cost</span>
-              <span class="stat-val">$0.00</span>
+              <span class="stat-val text-accent-green">₹0.00</span>
             </div>
           </div>
 
           <div class="briefing-section">
             <h3>⚠️ The Commercial Catch</h3>
-            <p id="briefingCatch">Proprietary Foreca raster tile servers ($180+/month) & custom WebGL shaders.</p>
+            <p id="briefingCatch">Proprietary licensing and closed cloud back-ends.</p>
           </div>
 
           <div class="briefing-section">
             <h3>🛠️ Recommended Zero-Cost Stack</h3>
             <ul class="stack-list" id="briefingStackList">
-              <li><strong>Leaflet.js:</strong> Lightweight 2D map engine (Zero GPU strain)</li>
-              <li><strong>Open-Meteo:</strong> 10,000 free API calls/day for atmospheric telemetry</li>
-              <li><strong>RainViewer:</strong> Free public 10-minute precipitation radar loop</li>
-              <li><strong>2D Canvas IDW:</strong> Inverse distance interpolation for smooth thermal colors</li>
             </ul>
           </div>
         </div>
 
-        <!-- Tab 2: Full Deep Dossier (10-Dimension Spec) -->
+        <!-- Tab 2: Full Deep Dossier (Technical Spec) -->
         <div class="drawer-pane" id="paneDossier">
           <div class="dossier-actions-bar">
             <a href="https://docs.google.com/spreadsheets/d/1tUJvMemHp8bTx7yOp-irW_zw-yk9zWPWffp92u7GRQg/edit" target="_blank" class="btn btn-sm btn-glass">
@@ -222,7 +223,6 @@
             </a>
           </div>
           <div class="markdown-preview" id="dossierMarkdownContent">
-            <!-- Rendered Markdown will be injected here -->
           </div>
         </div>
       </div>
@@ -235,16 +235,16 @@
           <h3>⚡ 1-Click Autonomous Audit</h3>
           <button class="modal-close-btn" onclick="closeNewAuditModal()">✕</button>
         </div>
-        <p class="modal-subtitle">Paste any URL or application name. Our agentic pipeline deconstructs the stack, detects the commercial walls, maps free open-source equivalents, and syncs your Google Sheet automatically.</p>
+        <p class="modal-subtitle">Paste any URL or application name. Our agentic pipeline deconstructs the stack, detects the commercial walls in ₹, maps free open-source equivalents, and syncs your Google Sheet automatically.</p>
         
         <form id="newAuditForm" onsubmit="handle1ClickAudit(event)">
           <div class="form-group">
             <label for="autoTargetInput">Target URL or Application Name</label>
-            <input type="text" id="autoTargetInput" placeholder="e.g. https://www.astroseek.com or TradingView" required autofocus>
+            <input type="text" id="autoTargetInput" placeholder="e.g. https://www.windy.com or Drik Panchang" required autofocus>
           </div>
           <div class="form-group">
             <label for="optionalNotes">Custom Focus / Instructions (Optional)</label>
-            <input type="text" id="optionalNotes" placeholder="e.g. Focus on ephemeris accuracy, charts, or low-bandwidth mode">
+            <input type="text" id="optionalNotes" placeholder="e.g. Focus on low-bandwidth mode or 2D canvas">
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-glass" onclick="closeNewAuditModal()">Cancel</button>
@@ -268,16 +268,16 @@
         <span>Registry: <strong>Google Sheets Master Hub</strong></span>
       </div>
       <div class="status-center">
-        <span>Drawer: <strong>2-Min Briefing & 10-D Deep Dossier Enabled</strong></span>
+        <span>Visualizer: <strong>vis-network Graphify Physics • Pure 2D Canvas Safe</strong></span>
       </div>
       <div class="status-right">
-        <span>Deployment: <strong>Voroa (India/INR) / Vercel Ready</strong></span>
+        <span>Runway: <strong>₹0.00 / INR 0</strong></span>
       </div>
     </footer>
 
   </div>
 
-  <script src="graph.js"></script>
-  <script src="app.js"></script>
+  <script src="graph.js?v=3"></script>
+  <script src="app.js?v=3"></script>
 </body>
 </html>

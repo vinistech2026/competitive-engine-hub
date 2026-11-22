@@ -586,8 +586,14 @@ function openGraphForApp(appId) {
   if (!app) return;
   const win = document.getElementById('graphWindow');
   win.classList.add('active');
-  document.getElementById('graphWindowTitle').innerText = `🕸️ Dynamic DAG: ${app.name}`;
-  setTimeout(() => { initCytoscape(app); }, 50);
+  document.getElementById('graphWindowTitle').innerText = `🕸️ Graphify Knowledge Universe: ${app.name}`;
+  setTimeout(() => { 
+    if (typeof initVisNetwork === 'function') {
+      initVisNetwork(app);
+    } else if (typeof initCytoscape === 'function') {
+      initCytoscape(app);
+    }
+  }, 50);
 }
 
 function closeGraphWindow() {
@@ -597,18 +603,20 @@ function closeGraphWindow() {
 function toggleGraphWindowSize() {
   const win = document.getElementById('graphWindow');
   if (win.style.width === '90%') {
-    win.style.width = '640px';
-    win.style.height = '500px';
+    win.style.width = '680px';
+    win.style.height = '520px';
     win.style.top = '80px';
     win.style.right = '40px';
     win.style.left = 'auto';
   } else {
     win.style.width = '90%';
-    win.style.height = '82%';
-    win.style.top = '8%';
+    win.style.height = '85%';
+    win.style.top = '7%';
     win.style.left = '5%';
   }
-  if (window.cy) window.cy.resize();
+  if (window.network) {
+    setTimeout(() => { window.network.fit({ animation: true }); }, 150);
+  }
 }
 
 function maximizeGraphWindow() { toggleGraphWindowSize(); }
@@ -626,6 +634,7 @@ function makeWindowDraggable() {
     const rect = win.getBoundingClientRect();
     initialX = rect.left;
     initialY = rect.top;
+    header.style.cursor = 'grabbing';
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
@@ -634,13 +643,14 @@ function makeWindowDraggable() {
     if (!isDragging) return;
     const dx = e.clientX - startX;
     const dy = e.clientY - startY;
-    win.style.left = `${initialX + dx}px`;
-    win.style.top = `${initialY + dy}px`;
+    win.style.left = `${Math.max(10, initialX + dx)}px`;
+    win.style.top = `${Math.max(10, initialY + dy)}px`;
     win.style.right = 'auto';
   }
 
   function onMouseUp() {
     isDragging = false;
+    header.style.cursor = 'grab';
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
   }
