@@ -1,94 +1,113 @@
-// Real Software Architecture & Dependency Graph Generator
-// Generates accurate functional pipeline nodes instead of generic dummy rectangles
+// Universal Dynamic Graph Architecture Engine for Competitive Studio
+// Replaces static hardcoded if/else with dynamic DAG synthesis from any audited target
+
+function generateArchitectureDAG(app) {
+  // If app has manually provided graphNodes/graphEdges with custom depth, use them
+  if (app.graphNodes && app.graphNodes.length > 0 && app.graphEdges && app.graphEdges.length > 0) {
+    return { nodes: app.graphNodes, edges: app.graphEdges };
+  }
+
+  const nodes = [];
+  const edges = [];
+  const safeId = (app.id || 'target').replace(/[^a-zA-Z0-9_]/g, '_');
+
+  // Layer 0: Target Client / Product Presentation
+  const rootId = `root_${safeId}`;
+  nodes.push({
+    id: rootId,
+    label: `${app.name || 'Target Application'}\n(${app.category || 'Web Application'})`,
+    type: 'target',
+    layer: 0
+  });
+
+  // Layer 0 Sub-system: Frontend / UI Engine
+  const uiId = `ui_${safeId}`;
+  const uiLabel = app.url && app.url.includes('http') 
+    ? `Client Web Presentation\n${new URL(app.url).hostname}` 
+    : `Client Web Presentation\n(Interactive UI Layer)`;
+  nodes.push({
+    id: uiId,
+    label: uiLabel,
+    type: 'target',
+    layer: 0
+  });
+  edges.push({ source: rootId, target: uiId, label: 'presents via' });
+
+  // Layer 1: Commercial Walls / Proprietary Catch
+  // Parse catch into individual proprietary bottlenecks
+  const catchText = app.commercialCatch || (app.briefing && app.briefing.catch) || 'Proprietary Cloud Services & APIs';
+  const catchParts = catchText.split(/[&;+]/).map(s => s.trim()).filter(Boolean);
+  
+  const wallIds = [];
+  catchParts.forEach((part, index) => {
+    const wallId = `wall_${safeId}_${index}`;
+    wallIds.push(wallId);
+    // Wrap text for Cytoscape node readability
+    const shortLabel = part.length > 40 ? part.slice(0, 38) + '...' : part;
+    nodes.push({
+      id: wallId,
+      label: `Proprietary Wall:\n${shortLabel}`,
+      type: 'proprietary',
+      layer: 1
+    });
+    edges.push({ source: uiId, target: wallId, label: 'locked by' });
+  });
+
+  // Layer 2: Zero-Cost Open Source Replacements
+  // Parse open stack into modular alternatives
+  const stackText = app.openStack || (app.briefing && app.briefing.stack ? app.briefing.stack.join(' + ') : 'Open Source Primitives');
+  const stackParts = stackText.split(/[+;,]/).map(s => s.trim()).filter(Boolean);
+
+  const openIds = [];
+  stackParts.forEach((part, index) => {
+    const openId = `open_${safeId}_${index}`;
+    openIds.push(openId);
+    const shortPart = part.length > 42 ? part.slice(0, 40) + '...' : part;
+    nodes.push({
+      id: openId,
+      label: `Zero-Cost Alternative:\n${shortPart}`,
+      type: 'opensource',
+      layer: 2
+    });
+
+    // Wire to corresponding wall or client
+    if (wallIds.length > 0) {
+      const targetWall = wallIds[index % wallIds.length];
+      edges.push({ source: targetWall, target: openId, label: 'clean-room replaced by' });
+    } else {
+      edges.push({ source: uiId, target: openId, label: 'powered by' });
+    }
+  });
+
+  // Layer 3: Evaluation & Parity Verdict
+  const metricId = `metric_${safeId}`;
+  const parityVal = app.parity || 75;
+  const marketVal = app.marketIndex || 'High';
+  nodes.push({
+    id: metricId,
+    label: `Overall Parity: ${parityVal}%\nMarket Viability: ${marketVal}\nRunway: $0.00 / mo`,
+    type: 'metric',
+    layer: 3
+  });
+
+  // Connect open source replacements to the final metric node
+  if (openIds.length > 0) {
+    openIds.forEach(oId => {
+      edges.push({ source: oId, target: metricId, label: 'yields parity' });
+    });
+  } else {
+    edges.push({ source: rootId, target: metricId, label: 'evaluated' });
+  }
+
+  return { nodes, edges };
+}
 
 function initCytoscape(app) {
   const container = document.getElementById('cy');
   if (!container) return;
 
-  let graphNodes = [];
-  let graphEdges = [];
-
-  if (app.id === 'drikpanchang') {
-    // True Architecture of Drik Panchang
-    graphNodes = [
-      // 1. Client Presentation
-      { id: 'client_ui', label: 'Client Web/PWA\n(Localized Multi-Language)', type: 'target', layer: 0 },
-      { id: 'svg_engine', label: 'Dynamic SVG Renderer\n(North Diamond / South Box)', type: 'opensource', layer: 0 },
-
-      // 2. Astronomical Computational Core (Drik Ganita)
-      { id: 'drik_engine', label: 'Drik Ganita Solver\n(Optical True Positions)', type: 'target', layer: 1 },
-      { id: 'ayanamsha', label: 'Ayanamsha Module\n(Lahiri / Chitra Paksha 24°13\')', type: 'target', layer: 1 },
-      { id: 'horizon_model', label: 'Hindu Sunrise Model\n(Zenith Z0 = 90°50\')', type: 'target', layer: 1 },
-
-      // 3. Ephemeris Sources & Commercial Walls
-      { id: 'sweph_c', label: 'Swiss Ephemeris (C-Lib)\n[License Wall: $700+]', type: 'proprietary', layer: 2 },
-      { id: 'nasa_jpl', label: 'NASA JPL DE440\n(Planetary Ephemeris Files)', type: 'opensource', layer: 2 },
-      { id: 'astro_engine', label: 'astronomy-engine (MIT)\nor pyswisseph (GPL)', type: 'opensource', layer: 2 },
-
-      // 4. The 5 Limbs (Panchanga Engine)
-      { id: 'panchanga', label: '5 Limbs Mathematical Engine\n(Tithi, Nakshatra, Yoga, Karana, Vara)', type: 'target', layer: 3 },
-      { id: 'root_finder', label: 'Brent\'s Root-Finder\n(Sub-second End Times)', type: 'opensource', layer: 3 },
-
-      // 5. Liturgical Decision Engine (The Real Competitive Moat)
-      { id: 'dharma_rules', label: '10,000+ Dharmasindhu Rules\n[The 10-Year Compilation Moat]', type: 'proprietary', layer: 4 },
-      { id: 'jyotisha_open', label: 'sanskrit-coders/jyotisha\n(1,500 Open Rules Baseline)', type: 'opensource', layer: 4 },
-      { id: 'nishita_kaal', label: 'Nishita Midnight / Pradosha Dusk\nSolar Partition Algorithms', type: 'target', layer: 4 },
-
-      // 6. Feasibility Metric
-      { id: 'parity_metric', label: 'Overall Parity: 70%\n(Math: 100% | Rules: 55%)', type: 'metric', layer: 5 }
-    ];
-
-    graphEdges = [
-      { source: 'client_ui', target: 'svg_engine', label: 'renders charts via' },
-      { source: 'client_ui', target: 'drik_engine', label: 'queries ephemeris' },
-      { source: 'drik_engine', target: 'ayanamsha', label: 'applies precession' },
-      { source: 'drik_engine', target: 'horizon_model', label: 'computes sunrise' },
-      { source: 'drik_engine', target: 'sweph_c', label: 'traditionally uses' },
-      { source: 'sweph_c', target: 'astro_engine', label: 'clean-room replaced by' },
-      { source: 'astro_engine', target: 'nasa_jpl', label: 'reads coefficients' },
-      { source: 'drik_engine', target: 'panchanga', label: 'feeds raw coords' },
-      { source: 'panchanga', target: 'root_finder', label: 'calculates transition' },
-      { source: 'panchanga', target: 'dharma_rules', label: 'passed into' },
-      { source: 'dharma_rules', target: 'jyotisha_open', label: 'open baseline' },
-      { source: 'dharma_rules', target: 'nishita_kaal', label: 'evaluates windows' },
-      { source: 'dharma_rules', target: 'parity_metric', label: 'evaluates' }
-    ];
-  } else if (app.id === 'msn-weather') {
-    // True Architecture of MSN Weather Maps
-    graphNodes = [
-      { id: 'msn_ui', label: 'MSN Weather Web Client\n(Microsoft Fluent UI)', type: 'target', layer: 0 },
-      { id: 'canvas_layer', label: 'Client 2D Canvas Fallback\n(Dell E6220 60 FPS)', type: 'opensource', layer: 0 },
-      
-      { id: 'azure_tomtom', label: 'TomTom Vector Basemap\n(Enterprise Azure CDN)', type: 'proprietary', layer: 1 },
-      { id: 'webgl_shader', label: 'Custom WebGL 2.0 Shaders\n[GPU Crash Risk on HD 3000]', type: 'proprietary', layer: 1 },
-      { id: 'leaflet_osm', label: 'Leaflet.js + CartoDB\n(Zero GPU Strain)', type: 'opensource', layer: 1 },
-      
-      { id: 'foreca_tiles', label: 'Foreca Global Raster Tiles\n[Commercial Wall: $180+/mo]', type: 'proprietary', layer: 2 },
-      { id: 'rainviewer_api', label: 'RainViewer API v2\n(Free 10-Min Radar Loops)', type: 'opensource', layer: 2 },
-      { id: 'openmeteo_api', label: 'Open-Meteo GFS API\n(10,000 Free Calls/Day)', type: 'opensource', layer: 2 },
-      { id: 'idw_contour', label: '2D IDW Canvas Interpolator\n(Smooth Thermal Gradients)', type: 'opensource', layer: 2 },
-      
-      { id: 'timeline_scrubber', label: '10-Day / 4-Hour Time Scrubber\n(Temporal Interpolation)', type: 'target', layer: 3 },
-      { id: 'parity_msn', label: 'Tech Parity: 75%\nMarket: 88%', type: 'metric', layer: 4 }
-    ];
-
-    graphEdges = [
-      { source: 'msn_ui', target: 'azure_tomtom', label: 'basemap' },
-      { source: 'msn_ui', target: 'webgl_shader', label: 'heatmaps' },
-      { source: 'azure_tomtom', target: 'leaflet_osm', label: 'replaced by' },
-      { source: 'webgl_shader', target: 'canvas_layer', label: 'safe fallback' },
-      { source: 'msn_ui', target: 'foreca_tiles', label: 'paid feeds' },
-      { source: 'foreca_tiles', target: 'rainviewer_api', label: 'radar replaced by' },
-      { source: 'foreca_tiles', target: 'openmeteo_api', label: 'weather data' },
-      { source: 'openmeteo_api', target: 'idw_contour', label: 'renders via' },
-      { source: 'msn_ui', target: 'timeline_scrubber', label: 'scrubs time' },
-      { source: 'timeline_scrubber', target: 'parity_msn', label: 'evaluates' }
-    ];
-  } else {
-    // Generic fallback for unknown target
-    graphNodes = app.graphNodes || [];
-    graphEdges = app.graphEdges || [];
-  }
+  // Dynamically generate the DAG for any application
+  const { nodes: graphNodes, edges: graphEdges } = generateArchitectureDAG(app);
 
   const elements = {
     nodes: graphNodes.map(n => ({ data: n })),
@@ -107,13 +126,13 @@ function initCytoscape(app) {
           'label': 'data(label)',
           'color': '#F8FAFC',
           'font-size': '11px',
-          'font-family': '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+          'font-family': '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
           'text-valign': 'center',
           'text-halign': 'center',
           'background-color': '#1E293B',
           'width': 'label',
-          'height': '42px',
-          'padding': '14px',
+          'height': '46px',
+          'padding': '16px',
           'shape': 'round-rectangle',
           'border-width': 1.5,
           'border-color': '#475569',
@@ -123,7 +142,7 @@ function initCytoscape(app) {
       {
         selector: 'node[type = "target"]',
         style: {
-          'background-color': '#0A84FF',
+          'background-color': '#0284C7',
           'border-color': '#38BDF8',
           'font-weight': 'bold',
           'font-size': '12px'
@@ -132,22 +151,25 @@ function initCytoscape(app) {
       {
         selector: 'node[type = "proprietary"]',
         style: {
-          'background-color': '#7F1D1D',
-          'border-color': '#EF4444'
+          'background-color': '#881337',
+          'border-color': '#F43F5E',
+          'font-weight': '500'
         }
       },
       {
         selector: 'node[type = "opensource"]',
         style: {
           'background-color': '#064E3B',
-          'border-color': '#10B981'
+          'border-color': '#10B981',
+          'font-weight': '500'
         }
       },
       {
         selector: 'node[type = "metric"]',
         style: {
           'background-color': '#78350F',
-          'border-color': '#F59E0B'
+          'border-color': '#F59E0B',
+          'font-weight': 'bold'
         }
       },
       {
@@ -157,7 +179,7 @@ function initCytoscape(app) {
           'line-color': '#334155',
           'target-arrow-color': '#64748B',
           'target-arrow-shape': 'triangle',
-          'curve-style': 'straight',
+          'curve-style': 'bezier',
           'label': 'data(label)',
           'font-size': '9px',
           'color': '#94A3B8',
@@ -170,7 +192,7 @@ function initCytoscape(app) {
       name: 'breadthfirst',
       directed: true,
       spacingFactor: 1.4,
-      padding: 30,
+      padding: 35,
       avoidOverlap: true,
       animate: false
     }
@@ -189,22 +211,25 @@ function zoomGraph(factor) {
     renderedPosition: { x: window.cy.width() / 2, y: window.cy.height() / 2 }
   });
 }
+
 function fitGraph() {
   if (!window.cy) return;
   window.cy.fit(undefined, 30);
 }
+
 function resetGraphLayout() {
   if (!window.cy) return;
   window.cy.layout({
     name: 'breadthfirst',
     directed: true,
     spacingFactor: 1.4,
-    padding: 30,
+    padding: 35,
     avoidOverlap: true,
     animate: false
   }).run();
   window.cy.fit(undefined, 30);
 }
+
 function searchGraphNode(query) {
   if (!window.cy) return;
   const q = query.trim().toLowerCase();
@@ -219,7 +244,7 @@ function searchGraphNode(query) {
       window.cy.nodes().style('opacity', 0.25);
       window.cy.edges().style('opacity', 0.1);
       matched.style('opacity', 1);
-      matched.neighborhood().style('opacity', 0.8);
+      matched.neighborhood().style('opacity', 0.85);
       window.cy.animate({ center: { eles: matched.first() }, duration: 250 });
     }
   });
