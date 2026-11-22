@@ -636,31 +636,204 @@ Direct asset analysis of \`https://www.bhaskar.com/\` maps an enterprise media p
 };
 
 
-// Fuzzy Resolver for Known Dossiers & Specs
-function findKnownDossier(identifier) {
-  if (!identifier) return null;
-  const str = String(identifier).toLowerCase();
-  
-  if (str.includes('drik') || str.includes('panchang')) {
-    return KNOWN_DOSSIERS['drik-panchang'];
-  }
-  if (str.includes('msn') || str.includes('weather.msn')) {
-    return KNOWN_DOSSIERS['msn'];
-  }
-  if (str.includes('windy') || str.includes('windytv')) {
-    return KNOWN_DOSSIERS['windy'];
-  }
-  if (str.includes('nursery') || str.includes('plant')) {
-    return KNOWN_DOSSIERS['nurserylive'];
-  }
-  if (str.includes('bhaskar') || str.includes('dainik')) {
-    return KNOWN_DOSSIERS['bhaskar'];
-  }
-  
-  return KNOWN_DOSSIERS[str] || null;
+
+// ============================================================================
+// DYNAMIC INTELLIGENCE ENGINE: Similarity Scoring & Domain Taxonomy Analysis
+// ============================================================================
+
+// N-Gram & Levenshtein-based String Distance for Dynamic Fuzzy Matching
+function calculateStringSimilarity(s1, s2) {
+  if (!s1 || !s2) return 0;
+  const a = s1.toLowerCase().trim();
+  const b = s2.toLowerCase().trim();
+  if (a === b) return 1.0;
+  if (a.includes(b) || b.includes(a)) return 0.85;
+
+  // Bigram token intersection
+  const getBigrams = (str) => {
+    const s = str.replace(/[^a-z0-9]/g, '');
+    const set = new Set();
+    for (let i = 0; i < s.length - 1; i++) set.add(s.slice(i, i + 2));
+    return set;
+  };
+
+  const b1 = getBigrams(a);
+  const b2 = getBigrams(b);
+  if (b1.size === 0 || b2.size === 0) return 0;
+
+  let intersection = 0;
+  b1.forEach(bg => { if (b2.has(bg)) intersection++; });
+  return (2.0 * intersection) / (b1.size + b2.size);
 }
 
-// Autonomous Lowest-Level Deep Dossier Generator for Arbitrary/Dynamic URLs
+// Fully Dynamic Fuzzy Resolver across KNOWN_DOSSIERS registry
+function findKnownDossier(identifier) {
+  if (!identifier) return null;
+  const needle = String(identifier).toLowerCase().replace(/https?:\/\//, '').replace('www.', '').trim();
+  const cleanNeedle = needle.split('/')[0].split('.')[0].replace(/[^a-z0-9]/g, '');
+
+  let bestMatch = null;
+  let highestScore = 0;
+
+  for (const key of Object.keys(KNOWN_DOSSIERS)) {
+    const entry = KNOWN_DOSSIERS[key];
+    const targetSlug = (entry.id || key).toLowerCase().replace(/[^a-z0-9]/g, '');
+    const targetName = (entry.name || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const targetUrl = (entry.url || '').toLowerCase().replace(/https?:\/\//, '').replace('www.', '');
+    const targetDomain = targetUrl.split('/')[0].split('.')[0].replace(/[^a-z0-9]/g, '');
+
+    // Direct token inclusion check
+    if (needle.includes(targetSlug) || targetSlug.includes(cleanNeedle) ||
+        needle.includes(targetDomain) || targetDomain.includes(cleanNeedle) ||
+        needle.includes(targetName) || targetName.includes(cleanNeedle)) {
+      return entry;
+    }
+
+    // Dynamic statistical string similarity
+    const scoreSlug = calculateStringSimilarity(cleanNeedle, targetSlug);
+    const scoreDomain = calculateStringSimilarity(cleanNeedle, targetDomain);
+    const scoreName = calculateStringSimilarity(cleanNeedle, targetName);
+    const maxScore = Math.max(scoreSlug, scoreDomain, scoreName);
+
+    if (maxScore > highestScore) {
+      highestScore = maxScore;
+      bestMatch = entry;
+    }
+  }
+
+  // Threshold: If similarity exceeds 0.65, resolve dynamically
+  if (highestScore >= 0.65) {
+    return bestMatch;
+  }
+
+  return null;
+}
+
+// Dynamic Taxonomy Classifier: Deduces niche, commercial wall, and open stack from URL/domain tokens
+function inferNicheTaxonomy(rawTarget) {
+  let hostname = '';
+  let pathname = '';
+  try {
+    const urlObj = rawTarget.startsWith('http') ? new URL(rawTarget) : new URL('https://' + rawTarget);
+    hostname = urlObj.hostname.replace('www.', '').toLowerCase();
+    pathname = (urlObj.pathname || '').toLowerCase();
+  } catch (e) {
+    hostname = String(rawTarget).replace(/https?:\/\//, '').replace('www.', '').split('/')[0].toLowerCase();
+    pathname = String(rawTarget).split('/').slice(1).join('/').toLowerCase();
+  }
+
+  const tokenStream = (hostname + ' ' + pathname).replace(/[^a-z0-9]/g, ' ');
+
+  // Domain Taxonomy Matrix
+  const TAXONOMY_RULES = [
+    {
+      category: "D2C E-Commerce & Retail",
+      keywords: ["shop", "store", "buy", "cart", "nursery", "plant", "seed", "garden", "flower", "pot", "fashion", "apparel", "wear", "shoes", "beauty", "cosmetic", "mart", "bazaar", "retail", "gift"],
+      commercialCatch: "Multi-carrier physical logistics SLA, perishable/inventory holding mortality & 2-3% payment/e-commerce platform fees",
+      openStack: "Astro / Next.js Headless + PocketBase / SQLite + Tailwind UI + Minisearch",
+      parity: 75,
+      marketIndex: "90% (Very High)",
+      uiTraits: {
+        chrome: "Top promotional marquee bar, live catalog instant search with 200ms debounce, pincode SLA check, sliding cart drawer with free-shipping meter",
+        hubs: ["Catalog / Category Hubs", "Trending New Arrivals", "Curated Combo Bundles", "Customer Reviews (UGC)", "Under ₹499 Value Zone"],
+        pdp: "Multi-angle WebP gallery, variant selectors (size/pot/color), stock counter, FAQs, and 1-click Add to Cart with optimistic update",
+        apis: ["GET /api/v1/catalog/products", "POST /api/v1/cart/items", "GET /api/v1/delivery/pincode-sla", "POST /api/v1/orders/create"]
+      }
+    },
+    {
+      category: "Geospatial, Weather & Environmental",
+      keywords: ["weather", "meteo", "climate", "radar", "satellite", "wind", "storm", "cyclone", "rain", "forecast", "temp", "earth", "ocean", "map", "gis", "hazard"],
+      commercialCatch: "Proprietary global radar mosaic pipelines, continuous isobar/temperature tile feeds (₹15,000+/mo) & ECMWF model licenses",
+      openStack: "Leaflet.js / MapLibre + RainViewer Radar Cache + Open-Meteo GFS/ICON + 2D HTML5 Canvas",
+      parity: 75,
+      marketIndex: "88% (High)",
+      uiTraits: {
+        chrome: "Full-viewport interactive geospatial canvas, top location search bar with auto-detect coordinates, right-hand layer drawer, bottom 10-day timeline scrubber",
+        hubs: ["Atmospheric Radar (Precipitation)", "Particle Wind Vectors", "Satellite Cloud Cover", "Air Quality Index (AQI)", "Severe Cyclone Tracking"],
+        pdp: "Detailed 10-day hourly forecast graph, meteogram curves, UV/humidity telemetry, and isobar contour toggles",
+        apis: ["GET /api/v1/forecast/point", "GET /api/v1/tiles/radar/{z}/{x}/{y}", "GET /api/v1/wind/gfs-grid", "GET /api/v1/air-quality"]
+      }
+    },
+    {
+      category: "Media, Publishing & Vernacular News",
+      keywords: ["news", "post", "times", "daily", "express", "patrika", "bhaskar", "jagran", "live", "media", "press", "tv", "bulletin", "editorial", "epaper"],
+      commercialCatch: "Hyper-local ground journalist networks across 60+ districts & ₹18,00,000+/mo enterprise Akamai/Cloudflare edge egress",
+      openStack: "Astro SSR / Next.js + PocketBase / SQLite WAL + Cloudflare Pages + PDF.js Canvas",
+      parity: 80,
+      marketIndex: "88% (High)",
+      uiTraits: {
+        chrome: "District/State multi-city switcher (65+ cities), breaking news red ticker, ePaper vector reader drawer, category tabs",
+        hubs: ["National / State Politics", "Hyper-Local City Beat", "Business & Markets", "Cricket & Sports Live", "ePaper Digital Edition"],
+        pdp: "Low-latency article viewport with font resizing, text-to-speech reader, related news cards, and social share drawer",
+        apis: ["GET /api/v1/feed/breaking", "GET /api/v1/feed/city/:id", "GET /api/v1/articles/:slug", "GET /api/v1/epaper/pages"]
+      }
+    },
+    {
+      category: "Vedic Astrology & Ephemeris Systems",
+      keywords: ["panchang", "drik", "kundali", "astro", "horoscope", "jyotish", "vedic", "tithi", "nakshatra", "muhurta", "rashifal", "zodiac", "ephemeris"],
+      commercialCatch: "10,000+ Dharmasindhu liturgical festival arbitration algorithms & Swiss Ephemeris commercial license (₹58,000+)",
+      openStack: "pyswisseph / astronomy-engine (MIT) + sanskrit-coders/jyotisha + Pure 2D SVG Charts",
+      parity: 70,
+      marketIndex: "94% (Very High)",
+      uiTraits: {
+        chrome: "City/coordinate geo-picker with Hindu sunrise (Udaya Tithi) calculation, calendar month navigator, festival search bar",
+        hubs: ["Daily Drik Panchang", "Kundali / Birth Chart Generator", "Choghadiya / Shubh Muhurat", "Hindu Calendar & Vrat Dates", "Planetary Transit (Gochar)"],
+        pdp: "Mathematical 5-limbs breakdown (Tithi, Nakshatra, Yoga, Karana, Vara) with exact end times and North/South Indian SVG chart renderers",
+        apis: ["GET /api/v1/ephemeris/panchang", "GET /api/v1/kundali/compute", "GET /api/v1/muhurta/choghadiya", "GET /api/v1/festivals/year"]
+      }
+    },
+    {
+      category: "Fintech, Trading & Web3",
+      keywords: ["trade", "stock", "crypto", "pay", "bank", "invest", "finance", "money", "wallet", "ledger", "coin", "zerodha", "groww", "defi", "market"],
+      commercialCatch: "Real-time Level 2/3 exchange order book feeds (NSE/BSE/Nasdaq) & SEBI/regulatory capital compliance",
+      openStack: "FastAPI / Go WebSocket Gateway + Lightweight-Charts / Canvas + TimescaleDB / DuckDB",
+      parity: 75,
+      marketIndex: "92% (Very High)",
+      uiTraits: {
+        chrome: "Live ticker marquee, watchlist drawer, multi-timeframe candle chart viewport, buy/sell order pad modal",
+        hubs: ["Market Watch / Real-time Quotes", "Technical Candlestick Charts", "Portfolio & P&L Analytics", "Options Chain / Greeks", "Market News & Alerts"],
+        pdp: "Depth chart (bid/ask ladder), historical volume profiles, financial ratio badges, and order dispatch modal",
+        apis: ["WSS /ws/market-feed", "GET /api/v1/market/candles", "POST /api/v1/orders/place", "GET /api/v1/portfolio/summary"]
+      }
+    }
+  ];
+
+  // Match keyword frequency
+  let bestCategory = null;
+  let maxMatches = 0;
+
+  for (const rule of TAXONOMY_RULES) {
+    let matchCount = 0;
+    for (const kw of rule.keywords) {
+      if (tokenStream.includes(kw)) matchCount++;
+    }
+    if (matchCount > maxMatches) {
+      maxMatches = matchCount;
+      bestCategory = rule;
+    }
+  }
+
+  if (bestCategory) {
+    return bestCategory;
+  }
+
+  // Fallback SaaS Category with dynamic UI traits
+  return {
+    category: "SaaS & Web Services",
+    commercialCatch: "Proprietary multi-tenant cloud microservices, enterprise telemetry & proprietary data layer",
+    openStack: "Node.js / FastAPI + SQLite / Supabase Free Tier + Tailwind UI",
+    parity: 80,
+    marketIndex: "85% (High)",
+    uiTraits: {
+      chrome: "Global sticky navigation bar, full-text instant search bar, notification drawer, user workspace selector",
+      hubs: ["Main Dashboard / Overview", "Categorical Entity Explorer", "Real-Time Telemetry & Reports", "Automations & Webhooks", "Organization Settings"],
+      pdp: "Detailed item view with activity timeline, audit logs, metadata table, and export triggers",
+      apis: ["GET /api/v1/bootstrap", "GET /api/v1/entities", "POST /api/v1/entities", "GET /api/v1/analytics"]
+    }
+  };
+}
+
+// Autonomous Lowest-Level Deep Dossier Generator for Any Arbitrary URL
 function generateAutonomousLowestLevelDossier(appName, targetUrl, category, commercialCatch, openStack, parity, marketIndex) {
   let hostname = '';
   let pathname = '/';
@@ -669,8 +842,17 @@ function generateAutonomousLowestLevelDossier(appName, targetUrl, category, comm
     hostname = urlObj.hostname.replace('www.', '');
     pathname = urlObj.pathname || '/';
   } catch (e) {
-    hostname = targetUrl.replace(/https?:\/\//, '').replace('www.', '').split('/')[0];
+    hostname = String(targetUrl).replace(/https?:\/\//, '').replace('www.', '').split('/')[0];
   }
+
+  // Infer dynamic traits from taxonomy engine
+  const taxonomy = inferNicheTaxonomy(targetUrl);
+  const resolvedCategory = category && category !== "SaaS & Web Services" ? category : taxonomy.category;
+  const resolvedCatch = commercialCatch && commercialCatch !== "Proprietary backend microservices & proprietary data layer" ? commercialCatch : taxonomy.commercialCatch;
+  const resolvedStack = openStack && !openStack.includes('FastAPI + SQLite') ? openStack : taxonomy.openStack;
+  const resolvedParity = parity || taxonomy.parity;
+  const resolvedMarket = marketIndex || taxonomy.marketIndex;
+  const traits = taxonomy.uiTraits;
 
   const docId = 'DOSSIER-AUTO-' + appName.toUpperCase().replace(/[^A-Z0-9]/g, '');
   const currencyWall = '₹12,50,000 - ₹35,00,000 / year';
@@ -678,7 +860,7 @@ function generateAutonomousLowestLevelDossier(appName, targetUrl, category, comm
   return `# Deep Reverse-Engineering Dossier: ${appName}
 **Document ID:** \`${docId}\`  
 **Target URL:** \`${targetUrl}\`  
-**Category:** ${category}  
+**Category:** ${resolvedCategory}  
 **Deconstructed Domain:** \`${hostname}\` (Root & Edge Infrastructure)  
 **Hardware Baseline:** Dell Latitude E6220 (Intel HD 3000, 8 GB RAM, Software Encoders, 2D Canvas Safe)  
 **Budget Runway:** Strict ₹0.00 / INR 0 (Free tiers & open-source primitives exclusively)  
@@ -688,22 +870,22 @@ function generateAutonomousLowestLevelDossier(appName, targetUrl, category, comm
 ### Tier 1: The 30-Second Glance (Executive Card)
 | Architectural Dimension | Enterprise Target Baseline (${appName}) | Zero-Cost Open Clean-Room Equivalent | Parity Score |
 | :--- | :--- | :--- | :--- |
-| **Core UI Engine** | Proprietary SSR / Next.js / React micro-frontends | Pure HTML5 + CSS Grid + Vanilla JS / Lightweight Vite | **90%** |
-| **Commercial Catch (Moat)** | ${commercialCatch} | Community Open APIs + Algorithmic 2D Canvas/SVG Math | **${parity}%** |
+| **Core UI Engine** | Proprietary SSR / Micro-frontends | Pure HTML5 + CSS Grid + Vanilla JS / Lightweight Vite | **90%** |
+| **Commercial Catch (Moat)** | ${resolvedCatch} | Community Open APIs + Algorithmic 2D Canvas/SVG Math | **${resolvedParity}%** |
 | **Network & Data Ingestion** | Multi-CDN (Akamai/Cloudflare Ent.) + Paid APIs | Voroa Edge / Vercel Free + Open Public REST Endpoints | **85%** |
 | **Hardware Compute Mode** | WebGL shaders / GPU hardware acceleration | Software canvas rendering / Vector SVG path decimation | **100% (E6220 Safe)** |
-| **Realistic Parity Score** | **${parity}% Functional & Visual Parity** | Fully functional clean-room replica | **${parity}%** |
-| **Market Viability Index** | **${marketIndex}** | High market demand with ₹0.00 capital risk | **${marketIndex}** |
+| **Realistic Parity Score** | **${resolvedParity}% Functional & Visual Parity** | Fully functional clean-room replica | **${resolvedParity}%** |
+| **Market Viability Index** | **${resolvedMarket}** | High market demand with ₹0.00 capital risk | **${resolvedMarket}** |
 
 ---
 
 ### Tier 2: The 2-Minute Briefing (Core Decisions & Options)
 - **What ${appName} Does Well:** Highly optimized responsive viewport layout, fast edge CDN asset caching, persistent cookie/localStorage user state, and unified multi-tab navigation chrome.
-- **The Core Unvarnished Catch:** ${commercialCatch}. Replicating their proprietary vendor feeds or licensed datasets costs upwards of ${currencyWall}.
+- **The Core Unvarnished Catch:** ${resolvedCatch}. Replicating their proprietary vendor feeds or licensed datasets costs upwards of ${currencyWall}.
 - **Our Clean-Room Solution:**
-  1. **UI Topology Parity:** Reconstruct the complete layout hierarchy (Global Header, Sub-navigation tabs, Content feed grids, Detail modals, and Responsive sidebars) using native semantic HTML5 and CSS Grid without bloated 300 KB vendor component libraries.
+  1. **UI Topology Parity:** Reconstruct the complete layout hierarchy (${traits.chrome}) using native semantic HTML5 and CSS Grid without bloated 300 KB vendor component libraries.
   2. **Data & State Virtualization:** Implement local IndexedDB / localStorage caching to achieve sub-10ms UI renders without incurring backend database query charges.
-  3. **Zero-Cost Compute:** Replace proprietary enterprise backends with **${openStack}**.
+  3. **Zero-Cost Compute:** Replace proprietary enterprise backends with **${resolvedStack}**.
   4. **Hardware Safety:** Enforce strict 2D Canvas or SVG path rendering to prevent Intel HD 3000 GPU crashes on the Dell E6220.
 
 ---
@@ -716,12 +898,12 @@ The user interface of \`${hostname}\` is structured into five distinct operation
 - **A. Global Top Navigation & Chrome Shell (Persistent Header):**
   - **Brand Logo & Home Trigger:** SVG vector anchor linking to \`${pathname}\`.
   - **Dynamic Search & Autocomplete Bar:** \`<input type="search">\` with debounce (250ms), keyboard accessibility (\`ArrowUp\`, \`ArrowDown\`, \`Enter\`, \`Escape\`), and local query history cache.
-  - **Primary Section Navigation Tabs:** Horizontal overflow-scroll container with active indicator pill, including:
-    - *Tab 1: Overview / Home Feed* (Real-time dynamic feed).
-    - *Tab 2: Deep Explore / Categorical Explorer* (Multi-faceted filter drawer).
-    - *Tab 3: Analytics / Trends / Live Telemetry* (Tabular and chart views).
-    - *Tab 4: Regional / Localization Switcher* (Dropdown supporting Hindi, English, and regional locales).
-    - *Tab 5: User Settings & Preferences* (Theme toggle: Dark / Light / OLED, Density selector).
+  - **Primary Section Navigation Tabs (Categorical Hubs):**
+    - *Hub 1:* ${traits.hubs[0] || "Overview Feed"}
+    - *Hub 2:* ${traits.hubs[1] || "Categorical Explorer"}
+    - *Hub 3:* ${traits.hubs[2] || "Real-Time Telemetry"}
+    - *Hub 4:* ${traits.hubs[3] || "Regional / State Hub"}
+    - *Hub 5:* ${traits.hubs[4] || "User Settings & Utilities"}
   - **Action Buttons & Utilities:**
     - \`[ 🔔 Notifications ]\` Modal popover showing activity streams.
     - \`[ 🌐 Language / Region ]\` Modal selector with auto-geo detection fallback.
@@ -736,6 +918,7 @@ The user interface of \`${hostname}\` is structured into five distinct operation
     - Widget 3: Quick action shortcuts with 1-click state dispatchers.
 
 - **C. Interactive Controls & Action Buttons (Component Specs):**
+  - **Core Viewport / PDP Engine:** ${traits.pdp}.
   - **State Modals:** Full-screen backdrop overlay (\`rgba(0,0,0,0.6)\`) with focus-trap and \`Escape\` listener.
   - **Pagination & Virtual Scroller:** IntersectionObserver-driven infinite scroll with 20-item chunking to preserve DOM tree under 1,500 nodes.
   - **Floating Action Button (FAB):** Bottom-right contextual trigger for quick search / filter reset.
@@ -747,17 +930,17 @@ Deconstruction of network traffic reveals the following production endpoint hier
 - **Primary Web Application Origin:** \`https://${hostname}\` (Edge served with Brotli/Gzip compression).
 - **Static Asset & Media Edge:** \`https://static.${hostname}\` or \`https://assets.${hostname}\` (Immutable content hashing, Cache-Control: max-age=31536000).
 - **Core REST / GraphQL API Cluster:**
-  - \`GET /api/v1/bootstrap\` — Initial session token, client feature flags, and locale configuration.
-  - \`GET /api/v1/feed\` — Paginated primary data stream with filter parameters (\`limit=20&cursor=...\`).
-  - \`GET /api/v1/detail/:id\` — Detailed entity metadata, social graphs, and related items.
-  - \`POST /api/v1/telemetry\` — Client analytics beacon (batched via \`navigator.sendBeacon\`).
+  - \`${traits.apis[0] || 'GET /api/v1/bootstrap'}\`
+  - \`${traits.apis[1] || 'GET /api/v1/feed'}\`
+  - \`${traits.apis[2] || 'GET /api/v1/detail/:id'}\`
+  - \`${traits.apis[3] || 'POST /api/v1/telemetry'}\`
 - **Real-Time WebSocket / SSE Streams:** \`wss://${hostname}/ws\` for live streaming updates, instant telemetry broadcasts, and ticker ticks.
 
 ---
 
 #### 3. The 4 Commercial Walls (The Real Catches)
-1. **Commercial Wall 1 (Data Licensing Moat):**  
-   ${commercialCatch}. Enterprise vendors lock raw data behind multi-tier enterprise contracts.  
+1. **Commercial Wall 1 (Data Licensing / Operational Moat):**  
+   ${resolvedCatch}. Enterprise vendors lock raw data or operational fulfillment behind multi-tier contracts.  
    *Commercial Cost:* **${currencyWall}**.
 2. **Commercial Wall 2 (Global High-Throughput CDN Bandwidth):**  
    Multi-region Akamai / Fastly / Cloudflare Enterprise egress with DDoS mitigation.  
@@ -765,8 +948,8 @@ Deconstruction of network traffic reveals the following production endpoint hier
 3. **Commercial Wall 3 (Proprietary Backend Compute Infrastructure):**  
    Microservice orchestration clusters (Kubernetes / EKS) maintaining global state sync.  
    *Commercial Cost:* **₹1,50,000 - ₹5,00,000 / month**.
-4. **Commercial Wall 4 (Legal & Liturgical / Regulatory Compliance Moat):**  
-   Proprietary IP, legal content licensing, and geographic compliance barriers.
+4. **Commercial Wall 4 (Legal, Liturgical or Regulatory Compliance Moat):**  
+   Proprietary IP, vendor platform taxes, and geographic compliance barriers.
 
 ---
 
@@ -786,8 +969,8 @@ To run this application at full 60 FPS on legacy hardware without GPU accelerati
 
 ### Tier 4: Autonomous Replication Plan (Step-by-Step Blueprint)
 1. **Phase 1 (Scaffolding):** Clone the layout DOM hierarchy using semantic tags (\`<header>\`, \`<nav>\`, \`<main>\`, \`<section>\`, \`<footer>\`).
-2. **Phase 2 (Open API Wiring):** Wire data sources using \`${openStack}\`.
-3. **Phase 3 (Hardware decimation):** Test rendering in low-spec browser profile (CPU throttling 4x, Intel HD 3000 legacy graphics).
+2. **Phase 2 (Open API Wiring):** Wire data sources using \`${resolvedStack}\`.
+3. **Phase 3 (Hardware Decimation):** Test rendering in low-spec browser profile (CPU throttling 4x, Intel HD 3000 legacy graphics).
 4. **Phase 4 (Live Deployment):** Publish static bundle to Voroa Mumbai Nano edge at ₹0.00 / month.
 
 *(End of Autonomous Deep Dossier for ${appName})*
@@ -1076,27 +1259,14 @@ async function triggerAutonomousDeconstruction(rawTarget, notes = "") {
     const appName = domain.split('.')[0].charAt(0).toUpperCase() + domain.split('.')[0].slice(1);
     const fullUrl = rawTarget.startsWith('http') ? rawTarget : `https://${rawTarget}`;
 
-    let category = "SaaS & Web Services";
-    let commercialCatch = "Proprietary backend microservices & proprietary data layer";
-    let openStack = "Node.js / FastAPI + SQLite / Supabase Free + Tailwind UI";
-    let parity = 80;
-    let marketIndex = "85% (High)";
+    const taxonomy = inferNicheTaxonomy(rawTarget);
+    const category = taxonomy.category;
+    const commercialCatch = taxonomy.commercialCatch;
+    const openStack = taxonomy.openStack;
+    const parity = taxonomy.parity;
+    const marketIndex = taxonomy.marketIndex;
 
-    const lower = rawTarget.toLowerCase();
-    if (lower.includes('nursery') || lower.includes('plant') || lower.includes('seed') || lower.includes('garden')) {
-      category = "D2C E-Commerce & Retail";
-      commercialCatch = "Perishable live-plant transit packaging, nursery logistics & Shopify Plus app fees";
-      openStack = "Astro / Next.js + PocketBase / SQLite + Tailwind + Minisearch";
-      parity = 75;
-      marketIndex = "90% (Very High)";
-    } else if (lower.includes('weather') || lower.includes('map') || lower.includes('radar') || lower.includes('wind')) {
-      category = "Geospatial & Climate";
-      commercialCatch = "Paid satellite tile feeds & proprietary mapping licenses";
-      openStack = "Leaflet.js / MapLibre + Open-Meteo + 2D HTML5 Canvas";
-      parity = 75;
-    }
-
-        const auditSlug = domain.replace(/[^a-z0-9]/gi, '-').toLowerCase();
+    const auditSlug = domain.replace(/[^a-z0-9]/gi, '-').toLowerCase();
     const knownAudit = findKnownDossier(auditSlug) || findKnownDossier(appName) || findKnownDossier(fullUrl);
 
     const newAudit = {
