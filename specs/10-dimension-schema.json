@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Universal-10-Dimension-Audit-Schema",
+  "description": "Standardized schema for reverse-engineering and competitive deconstruction across any web software niche.",
+  "type": "object",
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "appName": { "type": "string" },
+        "targetUrl": { "type": "string" },
+        "niche": { "type": "string" },
+        "businessModel": { "type": "string" },
+        "auditDate": { "type": "string", "format": "date" }
+      },
+      "required": ["appName", "targetUrl", "niche"]
+    },
+    "dimension1_functionalTopology": {
+      "type": "object",
+      "properties": {
+        "primaryFeatures": { "type": "array", "items": { "type": "string" } },
+        "secondaryFeatures": { "type": "array", "items": { "type": "string" } },
+        "urlStateTokens": { "type": "object" }
+      }
+    },
+    "dimension2_designSystem": {
+      "type": "object",
+      "properties": {
+        "themeModes": { "type": "array", "items": { "type": "string" } },
+        "responsiveBreakpoints": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "dimension3_frontendArchitecture": {
+      "type": "object",
+      "properties": {
+        "renderingModel": { "type": "string", "enum": ["DOM", "Canvas2D", "WebGL1", "WebGL2", "Hybrid"] },
+        "stateStorage": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "dimension4_networkProtocols": {
+      "type": "object",
+      "properties": {
+        "protocols": { "type": "array", "items": { "type": "string" } },
+        "payloadFormat": { "type": "string" }
+      }
+    },
+    "dimension5_dataSources": {
+      "type": "object",
+      "properties": {
+        "primaryProviders": { "type": "array", "items": { "type": "string" } },
+        "thirdPartyVendors": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "dimension6_commercialModel": {
+      "type": "object",
+      "properties": {
+        "monetization": { "type": "string" },
+        "theCommercialWall": { "type": "string" },
+        "enterpriseCostEstimate": { "type": "string" }
+      }
+    },
+    "dimension7_securityAuth": {
+      "type": "object",
+      "properties": {
+        "authType": { "type": "string" },
+        "rateLimitMechanics": { "type": "string" }
+      }
+    },
+    "dimension8_hardwareProfile": {
+      "type": "object",
+      "properties": {
+        "ramIdleMb": { "type": "number" },
+        "gpuRequirement": { "type": "string" },
+        "dellE6220Safe": { "type": "boolean" }
+      }
+    },
+    "dimension9_zeroCostSubstitution": {
+      "type": "object",
+      "properties": {
+        "openSourceReplacements": { "type": "object" },
+        "realWorldParityPercent": { "type": "number" },
+        "unbridgeableGaps": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "dimension10_marketFeasibility": {
+      "type": "object",
+      "properties": {
+        "marketDemand": { "type": "string" },
+        "competitorWeakness": { "type": "string" },
+        "marketParityIndex": { "type": "number" }
+      }
+    }
+  }
+}

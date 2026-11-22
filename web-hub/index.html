@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Competitive Engine Hub • Studio</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Cytoscape 2D Canvas Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.28.1/cytoscape.min.js"></script>
+</head>
+<body>
+  <div class="app-viewport">
+    
+    <!-- Apple Glassmorphic Navigation -->
+    <header class="glass-header">
+      <div class="header-left">
+        <div class="apple-logo-badge">⚡</div>
+        <div class="brand-text">
+          <h1>Competitive Studio</h1>
+          <span class="sub-badge">Autonomous 1-Click Reverse-Engineering Engine</span>
+        </div>
+      </div>
+
+      <!-- Unified Dual-Mode Intelligence Search Bar -->
+      <div class="header-center">
+        <div class="unified-search-wrapper">
+          <div class="search-pill">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="searchInput" placeholder="Search registry or paste any URL to Auto-Audit..." oninput="handleUnifiedSearch(event)" onkeydown="handleSearchKey(event)">
+            <button class="btn-search-action" id="auditActionBtn" style="display:none;" onclick="triggerAuditFromSearch()">
+              ⚡ Auto-Audit
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <!-- 1-Click Autonomous Action Trigger -->
+        <button class="btn btn-primary" onclick="openNewAuditModal()">
+          <span class="btn-icon">＋</span> Audit Any URL
+        </button>
+
+        <!-- Google Sheet External Link -->
+        <a href="https://docs.google.com/spreadsheets/d/1tUJvMemHp8bTx7yOp-irW_zw-yk9zWPWffp92u7GRQg/edit" target="_blank" class="btn btn-glass">
+          📊 Master Sheet
+        </a>
+
+        <!-- Dark/Light Mode Switcher -->
+        <button class="btn btn-icon-only theme-toggle" onclick="toggleTheme()" title="Toggle Light/Dark Mode" aria-label="Toggle Theme">
+          <span id="themeIcon">☀️</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Bento Stats Bar -->
+    <section class="bento-stats-container">
+      <div class="bento-card">
+        <span class="bento-label">TARGETS AUDITED</span>
+        <div class="bento-value" id="stat-total">1</div>
+        <span class="bento-subtext" id="stat-niche-count">Across 1 Niche</span>
+      </div>
+      <div class="bento-card">
+        <span class="bento-label">AVG TECH PARITY</span>
+        <div class="bento-value text-accent-green" id="stat-parity">75%</div>
+        <span class="bento-subtext">Clean-Room Equivalents</span>
+      </div>
+      <div class="bento-card">
+        <span class="bento-label">ESTIMATED RUNWAY</span>
+        <div class="bento-value text-accent-blue">$0.00</div>
+        <span class="bento-subtext">100% Free Tiers Exclusively</span>
+      </div>
+      <div class="bento-card">
+        <span class="bento-label">HARDWARE GUARD</span>
+        <div class="bento-value text-accent-purple">&lt; 35 MB</div>
+        <span class="bento-subtext">Dell E6220 2D Canvas Safe</span>
+      </div>
+    </section>
+
+    <!-- Scalable Dynamic Category Filter Bar -->
+    <nav class="category-pill-bar">
+      <div class="primary-pills" id="dynamicPrimaryPills">
+        <button class="pill-btn active" data-category="ALL" onclick="filterCategory('ALL')">
+          All Targets <span class="pill-count" id="count-all">1</span>
+        </button>
+      </div>
+
+      <!-- Dropdown for Arbitrary/Expanding Niches -->
+      <div class="category-dropdown-wrapper">
+        <select id="nicheDropdown" class="niche-select-pill" onchange="handleDropdownFilter(this.value)">
+          <option value="">▾ More Categories...</option>
+        </select>
+      </div>
+    </nav>
+
+    <!-- Main Radar Portfolio Card -->
+    <main class="main-card">
+      <div class="table-responsive">
+        <table class="apple-table">
+          <thead>
+            <tr>
+              <th>Target App</th>
+              <th>Category</th>
+              <th>Tech Parity</th>
+              <th>Market Index</th>
+              <th>The Commercial Wall</th>
+              <th>Zero-Cost Open Stack</th>
+              <th>Documentation & Dossier</th>
+              <th class="text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="radar-table-body">
+            <!-- Dynamically populated via app.js -->
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <!-- Floating Resizable Graphify Window -->
+    <div class="floating-window" id="graphWindow">
+      <div class="window-header" id="windowHeader">
+        <div class="window-traffic-lights">
+          <span class="light close" onclick="closeGraphWindow()" title="Close"></span>
+          <span class="light minimize" onclick="toggleGraphWindowSize()" title="Toggle Size"></span>
+          <span class="light maximize" onclick="maximizeGraphWindow()" title="Maximize"></span>
+        </div>
+        <span class="window-title" id="graphWindowTitle">🕸️ Graphify Architecture Visualizer</span>
+        <div class="window-header-actions">
+          <span class="badge-tag">Static DAG • Zero Bounce</span>
+        </div>
+      </div>
+
+      <!-- Graph Toolbar (Zoom, Fit, Search) -->
+      <div class="graph-toolbar">
+        <div class="graph-search">
+          <input type="text" id="graphNodeSearch" placeholder="Find node in graph..." oninput="searchGraphNode(this.value)">
+        </div>
+        <div class="graph-controls">
+          <button class="btn-ctrl" onclick="zoomGraph(1.2)" title="Zoom In">＋</button>
+          <button class="btn-ctrl" onclick="zoomGraph(0.8)" title="Zoom Out">－</button>
+          <button class="btn-ctrl" onclick="fitGraph()" title="Fit to View">⛶ Fit</button>
+          <button class="btn-ctrl" onclick="resetGraphLayout()" title="Re-align">↺ Reset</button>
+        </div>
+      </div>
+
+      <div class="window-body">
+        <div id="cy" class="cy-viewport"></div>
+        <div class="window-legend">
+          <span class="legend-item"><span class="dot target"></span> Target App</span>
+          <span class="legend-item"><span class="dot proprietary"></span> Commercial Wall</span>
+          <span class="legend-item"><span class="dot opensource"></span> Zero-Cost Alternative</span>
+          <span class="legend-item"><span class="dot metric"></span> Metric / Parity</span>
+        </div>
+      </div>
+
+      <!-- Resizer Handle -->
+      <div class="resizer-handle" id="resizerHandle"></div>
+    </div>
+
+    <!-- Apple-Grade Slide-Over Documentation & Dossier Drawer -->
+    <aside class="slideover-drawer" id="docDrawer">
+      <div class="drawer-header">
+        <div class="drawer-title-group">
+          <span class="badge-pill" id="drawerCategory">Geospatial</span>
+          <h2 id="drawerTitle">MSN Weather Maps</h2>
+        </div>
+        <button class="drawer-close-btn" onclick="closeDocDrawer()">✕</button>
+      </div>
+
+      <div class="drawer-tabs">
+        <button class="drawer-tab-btn active" id="tabBriefingBtn" onclick="switchDrawerTab('briefing')">📱 2-Min Briefing</button>
+        <button class="drawer-tab-btn" id="tabDossierBtn" onclick="switchDrawerTab('dossier')">📑 Full Deep Dossier</button>
+      </div>
+
+      <div class="drawer-content">
+        <!-- Tab 1: 2-Minute Briefing (Human Scan) -->
+        <div class="drawer-pane active" id="paneBriefing">
+          <div class="briefing-card verdict-box">
+            <span class="verdict-label">EXECUTIVE VERDICT</span>
+            <div class="verdict-status" id="briefingVerdict">GO • 75% Parity Feasible</div>
+            <p id="briefingSummary">Clean-room reproduction achievable at zero infrastructure cost. Core limitation is continuous multi-zoom temperature heatmaps.</p>
+          </div>
+
+          <div class="briefing-grid">
+            <div class="micro-stat">
+              <span class="stat-lbl">Feasibility</span>
+              <span class="stat-val text-accent-green" id="briefingParity">75%</span>
+            </div>
+            <div class="micro-stat">
+              <span class="stat-lbl">Market Viability</span>
+              <span class="stat-val text-accent-blue" id="briefingMarket">88% (High)</span>
+            </div>
+            <div class="micro-stat">
+              <span class="stat-lbl">Monthly Cost</span>
+              <span class="stat-val">$0.00</span>
+            </div>
+          </div>
+
+          <div class="briefing-section">
+            <h3>⚠️ The Commercial Catch</h3>
+            <p id="briefingCatch">Proprietary Foreca raster tile servers ($180+/month) & custom WebGL shaders.</p>
+          </div>
+
+          <div class="briefing-section">
+            <h3>🛠️ Recommended Zero-Cost Stack</h3>
+            <ul class="stack-list" id="briefingStackList">
+              <li><strong>Leaflet.js:</strong> Lightweight 2D map engine (Zero GPU strain)</li>
+              <li><strong>Open-Meteo:</strong> 10,000 free API calls/day for atmospheric telemetry</li>
+              <li><strong>RainViewer:</strong> Free public 10-minute precipitation radar loop</li>
+              <li><strong>2D Canvas IDW:</strong> Inverse distance interpolation for smooth thermal colors</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Tab 2: Full Deep Dossier (10-Dimension Spec) -->
+        <div class="drawer-pane" id="paneDossier">
+          <div class="dossier-actions-bar">
+            <a href="https://docs.google.com/spreadsheets/d/1tUJvMemHp8bTx7yOp-irW_zw-yk9zWPWffp92u7GRQg/edit" target="_blank" class="btn btn-sm btn-glass">
+              📊 Open in Google Sheets
+            </a>
+          </div>
+          <div class="markdown-preview" id="dossierMarkdownContent">
+            <!-- Rendered Markdown will be injected here -->
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 1-Click Autonomous Audit Modal Dialog -->
+    <div class="modal-backdrop" id="newAuditModal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>⚡ 1-Click Autonomous Audit</h3>
+          <button class="modal-close-btn" onclick="closeNewAuditModal()">✕</button>
+        </div>
+        <p class="modal-subtitle">Paste any URL or application name. Our agentic pipeline deconstructs the stack, detects the commercial walls, maps free open-source equivalents, and syncs your Google Sheet automatically.</p>
+        
+        <form id="newAuditForm" onsubmit="handle1ClickAudit(event)">
+          <div class="form-group">
+            <label for="autoTargetInput">Target URL or Application Name</label>
+            <input type="text" id="autoTargetInput" placeholder="e.g. https://www.astroseek.com or TradingView" required autofocus>
+          </div>
+          <div class="form-group">
+            <label for="optionalNotes">Custom Focus / Instructions (Optional)</label>
+            <input type="text" id="optionalNotes" placeholder="e.g. Focus on ephemeris accuracy, charts, or low-bandwidth mode">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-glass" onclick="closeNewAuditModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="launchAuditBtn">
+              🚀 Launch Autonomous Audit
+            </button>
+          </div>
+        </form>
+
+        <div class="audit-progress" id="auditProgress" style="display:none;">
+          <div class="spinner"></div>
+          <span id="auditProgressText">Deconstructing target architecture...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Apple System Statusbar Footer -->
+    <footer class="system-statusbar">
+      <div class="status-left">
+        <span class="status-indicator online"></span>
+        <span>Registry: <strong>Google Sheets Master Hub</strong></span>
+      </div>
+      <div class="status-center">
+        <span>Drawer: <strong>2-Min Briefing & 10-D Deep Dossier Enabled</strong></span>
+      </div>
+      <div class="status-right">
+        <span>Deployment: <strong>Voroa (India/INR) / Vercel Ready</strong></span>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="graph.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

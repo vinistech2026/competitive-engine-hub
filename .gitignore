@@ -1,0 +1,12 @@
+# .gitignore for competitive-engine-hub
+# Strict Ponytail rules: No bloat, no heavy caches
+
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+.env
+.env.local
+dist/
+.vercel/
+*.log

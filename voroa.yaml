@@ -1,0 +1,8 @@
+version: "1"
+services:
+  competitive-studio:
+    type: static
+    publish: web-hub
+    routes:
+      - path: /*
+        target: /index.html
