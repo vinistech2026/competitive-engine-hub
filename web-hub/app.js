@@ -1070,12 +1070,10 @@ async function fetchLiveGoogleSheetData() {
       addAuditItem(cat, name, url, parityVal, marketVal, catchStr, stackStr);
     });
 
-    if (parsedAudits.length > 0) {
-      audits = parsedAudits;
-      refreshCategoryPills();
-      renderTable();
-      updateStats();
-    }
+    audits = parsedAudits;
+    refreshCategoryPills();
+    renderTable();
+    updateStats();
   } catch (err) {
     console.warn("Live Google Sheet sync error:", err);
   }
