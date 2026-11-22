@@ -835,14 +835,16 @@ function inferNicheTaxonomy(rawTarget) {
 
 // Autonomous Lowest-Level Deep Dossier Generator for Any Arbitrary URL
 function generateAutonomousLowestLevelDossier(appName, targetUrl, category, commercialCatch, openStack, parity, marketIndex) {
+  const safeName = (appName || 'Target Application').trim() || 'Target Application';
+  const safeUrl = (targetUrl || 'https://target-app.com').trim() || 'https://target-app.com';
   let hostname = '';
   let pathname = '/';
   try {
-    const urlObj = targetUrl.startsWith('http') ? new URL(targetUrl) : new URL('https://' + targetUrl);
-    hostname = urlObj.hostname.replace('www.', '');
+    const urlObj = safeUrl.startsWith('http') ? new URL(safeUrl) : new URL('https://' + safeUrl);
+    hostname = urlObj.hostname.replace('www.', '') || 'target-app.com';
     pathname = urlObj.pathname || '/';
   } catch (e) {
-    hostname = String(targetUrl).replace(/https?:\/\//, '').replace('www.', '').split('/')[0];
+    hostname = String(safeUrl).replace(/https?:\/\//, '').replace('www.', '').split('/')[0] || 'target-app.com';
   }
 
   // Infer dynamic traits from taxonomy engine
@@ -854,12 +856,12 @@ function generateAutonomousLowestLevelDossier(appName, targetUrl, category, comm
   const resolvedMarket = marketIndex || taxonomy.marketIndex;
   const traits = taxonomy.uiTraits;
 
-  const docId = 'DOSSIER-AUTO-' + appName.toUpperCase().replace(/[^A-Z0-9]/g, '');
+  const docId = 'DOSSIER-AUTO-' + safeName.toUpperCase().replace(/[^A-Z0-9]/g, '');
   const currencyWall = '₹12,50,000 - ₹35,00,000 / year';
 
-  return `# Deep Reverse-Engineering Dossier: ${appName}
+  return `# Deep Reverse-Engineering Dossier: ${safeName}
 **Document ID:** \`${docId}\`  
-**Target URL:** \`${targetUrl}\`  
+**Target URL:** \`${safeUrl}\`  
 **Category:** ${resolvedCategory}  
 **Deconstructed Domain:** \`${hostname}\` (Root & Edge Infrastructure)  
 **Hardware Baseline:** Dell Latitude E6220 (Intel HD 3000, 8 GB RAM, Software Encoders, 2D Canvas Safe)  
@@ -868,7 +870,7 @@ function generateAutonomousLowestLevelDossier(appName, targetUrl, category, comm
 ---
 
 ### Tier 1: The 30-Second Glance (Executive Card)
-| Architectural Dimension | Enterprise Target Baseline (${appName}) | Zero-Cost Open Clean-Room Equivalent | Parity Score |
+| Architectural Dimension | Enterprise Target Baseline (${safeName}) | Zero-Cost Open Clean-Room Equivalent | Parity Score |
 | :--- | :--- | :--- | :--- |
 | **Core UI Engine** | Proprietary SSR / Micro-frontends | Pure HTML5 + CSS Grid + Vanilla JS / Lightweight Vite | **90%** |
 | **Commercial Catch (Moat)** | ${resolvedCatch} | Community Open APIs + Algorithmic 2D Canvas/SVG Math | **${resolvedParity}%** |
@@ -880,7 +882,7 @@ function generateAutonomousLowestLevelDossier(appName, targetUrl, category, comm
 ---
 
 ### Tier 2: The 2-Minute Briefing (Core Decisions & Options)
-- **What ${appName} Does Well:** Highly optimized responsive viewport layout, fast edge CDN asset caching, persistent cookie/localStorage user state, and unified multi-tab navigation chrome.
+- **What ${safeName} Does Well:** Highly optimized responsive viewport layout, fast edge CDN asset caching, persistent cookie/localStorage user state, and unified multi-tab navigation chrome.
 - **The Core Unvarnished Catch:** ${resolvedCatch}. Replicating their proprietary vendor feeds or licensed datasets costs upwards of ${currencyWall}.
 - **Our Clean-Room Solution:**
   1. **UI Topology Parity:** Reconstruct the complete layout hierarchy (${traits.chrome}) using native semantic HTML5 and CSS Grid without bloated 300 KB vendor component libraries.
@@ -973,7 +975,7 @@ To run this application at full 60 FPS on legacy hardware without GPU accelerati
 3. **Phase 3 (Hardware Decimation):** Test rendering in low-spec browser profile (CPU throttling 4x, Intel HD 3000 legacy graphics).
 4. **Phase 4 (Live Deployment):** Publish static bundle to Voroa Mumbai Nano edge at ₹0.00 / month.
 
-*(End of Autonomous Deep Dossier for ${appName})*
+*(End of Autonomous Deep Dossier for ${safeName})*
 `;
 }
 
@@ -1243,19 +1245,39 @@ async function handle1ClickAudit(e) {
 }
 
 async function triggerAutonomousDeconstruction(rawTarget, notes = "") {
+  const cleanInput = (rawTarget || "").trim();
+  if (!cleanInput || cleanInput.length < 2) {
+    console.warn("Audit triggered with empty target. Aborting.");
+    return;
+  }
+
   const progress = document.getElementById('auditProgress');
   const progressText = document.getElementById('auditProgressText');
   const launchBtn = document.getElementById('launchAuditBtn');
 
   if (progress) progress.style.display = 'flex';
-  if (progressText) progressText.innerText = `Analyzing "${rawTarget}" architecture & commercial walls...`;
+  if (progressText) progressText.innerText = `Analyzing "${cleanInput}" architecture & commercial walls...`;
   if (launchBtn) launchBtn.disabled = true;
 
   try {
-    const urlObj = rawTarget.startsWith('http') ? new URL(rawTarget) : { hostname: rawTarget };
-    const domain = urlObj.hostname.replace('www.', '');
-    const appName = domain.split('.')[0].charAt(0).toUpperCase() + domain.split('.')[0].slice(1);
-    const fullUrl = rawTarget.startsWith('http') ? rawTarget : `https://${rawTarget}`;
+    let domain = '';
+    let appName = '';
+    let fullUrl = '';
+
+    if (cleanInput.startsWith('http://') || cleanInput.startsWith('https://')) {
+      const urlObj = new URL(cleanInput);
+      domain = urlObj.hostname.replace('www.', '');
+      appName = domain.split('.')[0].charAt(0).toUpperCase() + domain.split('.')[0].slice(1);
+      fullUrl = cleanInput;
+    } else if (cleanInput.includes('.')) {
+      domain = cleanInput.replace('www.', '').split('/')[0];
+      appName = domain.split('.')[0].charAt(0).toUpperCase() + domain.split('.')[0].slice(1);
+      fullUrl = `https://${cleanInput}`;
+    } else {
+      appName = cleanInput.charAt(0).toUpperCase() + cleanInput.slice(1);
+      domain = cleanInput.toLowerCase().replace(/[^a-z0-9]/g, '') + '.com';
+      fullUrl = `https://www.${domain}`;
+    }
 
     const taxonomy = inferNicheTaxonomy(rawTarget);
     const category = taxonomy.category;
@@ -1328,6 +1350,10 @@ async function triggerAutonomousDeconstruction(rawTarget, notes = "") {
 
 // Slide-Over Documentation Drawer Logic
 function openDocDrawer(appId, tab) {
+  if (!appId) {
+    console.warn("openDocDrawer called without valid appId.");
+    return;
+  }
   let app = audits.find(a => a.id === appId);
   if (!app) {
     // Try finding via fuzzy resolver
@@ -1335,6 +1361,7 @@ function openDocDrawer(appId, tab) {
     if (resolved) {
       app = resolved;
     } else {
+      console.warn("Could not find audit for appId:", appId);
       return;
     }
   }
