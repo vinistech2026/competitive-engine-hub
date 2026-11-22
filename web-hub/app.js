@@ -28,33 +28,110 @@ const KNOWN_DOSSIERS = {
       ]
     },
     deepDossierContent: `
-# Deep Dossier: Drik Panchang (Vedic Ephemeris & Calendar Engine)
-**Evidence Baseline:** Audited 2,828 sitemap URLs & 30 in-browser live DOM audits (\`VedicKundaliEngine/reports/drikpanchang-study\`)
-
-### Tier 1: The 30-Second Glance
-- **Target URL:** \`https://www.drikpanchang.com/\`
-- **Niche Category:** Vedic Astrology, Hindu Calendar & Astronomical Ephemeris
-- **Core Architecture:** Drik Ganita (optical planetary observation algorithms) + Swiss Ephemeris (C-lib) + Dharmasindhu liturgical engine
-- **The Real Commercial Wall:** Swiss Ephemeris commercial license fees (₹58,000+) + 10,000+ classical Vedic festival rules (Smartha vs Vaishnava, Arunodaya contamination)
-- **Zero-Cost Open Stack:** \`pyswisseph\` (GPLv2) or \`astronomy-engine\` (MIT) + \`sanskrit-coders/jyotisha\` + Pure 2D SVG Charts
-- **Realistic Parity Score:** **70%** (100% of mathematics & charts; 55% of localized community festival rules)
-- **Market Viability Index:** **94% (Very High)** — Authoritative global standard for Indian diaspora
+# Deep Reverse-Engineering Dossier: Drik Panchang
+**Document ID:** \`DOSSIER-002_DRIKPANCHANG\`  
+**Target URL:** \`https://www.drikpanchang.com/\`  
+**Category:** Vedic Astrology, Hindu Calendar & Ephemeris Systems  
+**Primary Operators:** Adarsh Mobile Applications LLP (Pankaj Sharma)  
+**Governance:** SSOT Compliant (\`STYLE.md\` & \`CORE_RULES.md\`)  
+**Hardware Baseline:** Dell Latitude E6220 (Intel HD 3000 Safe, Zero WebGL GPU Strain)  
+**Evidence Baseline:** 2,828 Sitemap URLs (80 Top-Level Sections) & 30 In-Browser Live DOM Tool Audits (\`VedicKundaliEngine/reports/drikpanchang-study\`)
 
 ---
 
-### Tier 2: Real-World Architecture & Offering Inventory (2,828 Sitemap URLs)
-- **Lyrics & Namavali (535 URLs):** Aarti, Chalisa, Stotras, Deities Namavali.
-- **Festivals & Vrats (278 URLs):** Vrat Katha, Ekadashi, Pradosham, Sankashti, regional observances.
-- **Panchang Engine (207 URLs):** Day Panchang, Month Panchang, and 12 regional variants (Tamil, Telugu, Kannada, Gujarati, Marathi, Bengali, Odia, Nepali, ISKCON).
-- **Muhurat & Shubh Dates (89 URLs):** Choghadiya, Hora, Lagna Muhurat, Abhijit, Do Ghati, Panchaka Rahita, Gowri Panchangam.
-- **Jyotish Calculators (40+ URLs):** Kundali, Ashta Kuta matching, Pancha Pakshi 5-bird states, Prashnavali, Rashi/Nakshatra init.
+## 1. Executive Summary & Parity Verdict
+
+| Metric | Evaluation |
+| :--- | :--- |
+| **Realistic Clean-Room Parity** | **70%** *(100% of Astronomical Mathematics & Vector Charts; 55% of localized community festival rules)* |
+| **Market Viability Index** | **94% (Very High)** — Global standard for Hindu diaspora |
+| **Monthly Infrastructure Cost** | **₹0.00 / INR 0** (Voroa Mumbai Nano / Cloudflare Pages Free Tier + Pure SVG) |
+| **Primary Commercial Wall** | **Decade-long Dharmasindhu liturgical rule codification & Swiss Ephemeris commercial license (₹58,000+)** |
+| **Zero-Cost Open-Source Stack** | **\`pyswisseph\` (GPLv2) or \`astronomy-engine\` (MIT) + \`sanskrit-coders/jyotisha\` + Pure 2D SVG Charts** |
 
 ---
 
-### Tier 3: Frontend DOM & 2D Canvas Findings
-- **Observed Live Primitives:** Classic theme uses \`canvas#dp-panchangam-shuddhi-canvas\` via \`dp-panchangam-chart.v1.0.7.js\` and \`dp-kundali-form\`.
-- **Clean-Room Hardware Adaptation (Dell Latitude E6220):** Replace canvas scripts with zero-overhead pure 2D SVG vector templates for North Indian Diamond and South Indian Box Kundalis, ensuring 60 FPS performance without GPU hardware acceleration.
-    `
+## 2. Comprehensive User-Facing IA & Offering Inventory (Top → Last Level)
+
+From our exhaustive audit of all **2,828 sitemap URLs across 80 top-level sections**:
+
+### A. Persistent On-Arrival Experience (\`/\`)
+- **Global Chrome & Navigation:**
+  - Header: Logo, Search (text input + voice/mic affordance), app store badges (Google Play, iOS App Store), ads/subscription toggle, language dropdown (English, Hindi, Gujarati, Marathi, Bengali, Tamil, Telugu, Kannada, Malayalam).
+  - Top Toolbar: Digital Clock (\`dpDigiClockHour\`, \`dpDigiClockSecond\`, \`dpDigiClockDate\`), Vedic Time clock (Ghati / Pal / Vipal), active location indicator with modal city picker, theme switcher (Classic Ochre / Modern Dark).
+  - Navigation Drawer (Slide-Out): Home, Panchang, Calendars, Muhurat, Vrat & Upavas, Festivals, Jyotish, Planets, Lyrics, Gallery, Utilities, Settings.
+- **Hero & Daily Context Cards:**
+  - "Online Panchang and Hindu Calendar for the world" with Gregorian date, Samvat (Vikram / Shaka / Gujarati), Ayana, Ritu.
+  - **Today's Panchang Summary:** Sunrise/Sunset, Tithi (with end second), Nakshatra, Yoga, Karana, Paksha, Moonsign, Sunsign.
+  - **Lagna Kundali Widget:** Interactive chart widget with tabs for North Indian Diamond, South Indian Box, East Indian, and Western wheel styles.
+  - **Upcoming Observances Carousel:** Dated fasts and festival previews with deity thumbnails.
+  - **Rashifal Grid:** 12 Rashi daily horoscope snippet cards.
+
+### B. Core Subsystem Breakdown (2,828 URLs Mapped)
+1. **Panchang Engine (\`/panchang/\` - 207 URLs):**
+   - Day Panchang (\`/panchang/day-panchang.html\`), Month Panchang.
+   - Regional Almanac Variants: Tamil Panchangam, Telugu Panchangam, Kannada Panchangam, Malayalam Panchangam, Gujarati Panchang, Marathi Panchang, Bengali Panjika, Odia Panji, Nepali Patro, ISKCON Panchang, Assamese Panjika.
+   - Panchang Utilities: Rahu Kaal, Yamaghanda, Gulika Kaal, Abhijit Muhurat, Panchak, Bhadra (Vishti Karana), Ganda Mool, Vinchudo, Chandrabalam, Tarabalam.
+2. **Muhurat & Shubh Timings (\`/muhurat/\` & \`/shubh-dates/\` - 89 URLs):**
+   - Daily Muhurat: Choghadiya (\`/muhurat/choghadiya.html\`), Hora (\`/muhurat/hora.html\`), Udaya Lagna Table (\`/muhurat/lagna.html\`), Do Ghati Muhurat, Panchaka Rahita Muhurat, Gowri Panchangam (Nalla Neram).
+   - Auspicious Life Ceremonies: Vivah (Marriage), Griha Pravesh (Housewarming), Vehicle Purchase, Property Purchase, Namakaran, Mundan, Janeu.
+3. **Jyotish & Kundali Calculators (\`/jyotisha/\` & \`/utilities/\` - 40+ Interactive Tools):**
+   - Chart Engines: Janma Kundali (\`/jyotisha/kundali/janma-kundali.html\`), Prashna Kundali, Kundali Matching (Ashta Kuta 36-point Guna Milan).
+   - Astrological Dosha & Remedies: Mangal Dosha Calculator, Shani Sadesati Analysis, Kalasarpa Yoga, Gemstone Recommender, Rudraksha Recommender.
+   - Predictive Divination: Pancha Pakshi Bird Activities (\`/pancha-pakshi/\`), Prashnavali (Rama Shalaka, Hanuman, Durga, Ganesha), Baby Name Initials (Swar Siddhanta).
+4. **Festivals, Vrats & Liturgy (\`/festivals/\` & \`/vrats/\` - 278 URLs):**
+   - Ekadashi Vrats (Parana timings, Arunodaya contamination rules), Pradosham, Sankashti Chaturthi, Purnima/Amavasya, Navratri (Ghatasthapana muhurat), Diwali (Lakshmi Puja Pradosha Sthira Lagna), Makar Sankranti (Punya Kaal).
+   - Complete Vrat Katha repository (114+ narrative stories).
+5. **Devotional Content & Knowledge (\`/lyrics/\` - 535 URLs):**
+   - Aarti, Chalisa, Stotras, Ashtakam, Kavacham, Vedic Mantras, 108/1000 Deities Namavali, Durga Saptashati, Sundarkand.
+
+---
+
+## 3. Live Browser DOM & Rendering Pipeline Evidence
+
+From our live browser evaluations across 30 key tools:
+- **Base Typography:** \`body { font-family: Verdana, Geneva, Arial, "Comic Sans MS", "Book Antiqua", sans-serif; }\`.
+- **Canvas Rendering Evidence:**
+  - Day Panchang and Homepage render canvas charts via \`<canvas id="dp-panchangam-shuddhi-canvas">\` driven by \`dp-panchangam-chart.v1.0.7.js\`.
+- **Form & Input Controls:**
+  - Interactive tools utilize shared modules: \`dp-kundali-form\`, \`dp-kundali-handler\`, \`dp-jquery-date-picker.v1.0.8.js\`, and \`dp-tooltip-popup.v2.0.0.js\`.
+- **Clean-Room Hardware Adaptation (Dell E6220 Intel HD 3000):**
+  - Rather than loading proprietary canvas rendering scripts that risk client slowdowns, our clean-room implementation uses **Pure 2D SVG vector templates**. This produces crystal-clear Kundali charts on both mobile and desktop with zero GPU load (< 10 MB RAM).
+
+---
+
+## 4. Core Astronomical & Mathematical Architecture
+
+### A. The Drik Ganita vs. Surya Siddhanta Paradigm
+* **Surya Siddhanta:** Archaic mean-motion epicycles. Over 1,600+ years, secular planetary drift causes longitudes to lag by **3° to 5° of arc** (~6 to 10 hours of error in Tithi termination times).
+* **Drik Ganita (Drik Panchang Core):** Uses true optical topocentric positions matching NASA JPL DE440 perturbation models.
+
+### B. The 5 Limbs (Panchanga Exact Formulas)
+1. **Tithi (Lunar Elongation):**
+   $$\Delta\lambda(t) = (\lambda_{\text{Moon}}(t) - \lambda_{\text{Sun}}(t)) \pmod{360^\circ}$$
+   $$\text{Tithi Number} = \left\lfloor \frac{\Delta\lambda(t)}{12^\circ} \right\rfloor + 1 \quad (1 \le \text{Tithi} \le 30)$$
+2. **Nakshatra:** Lunar longitude in sidereal segments of $13^\circ 20'$.
+3. **Yoga:** $(\lambda_{\text{Moon, sidereal}} + \lambda_{\text{Sun, sidereal}}) / 13^\circ 20'$.
+4. **Karana:** Half-Tithi (6° increments).
+5. **Vara:** Solar weekday counted strictly from local Hindu Sunrise to next Hindu Sunrise.
+
+### C. The Hindu Sunrise Model (Critical Moat)
+Standard civil sunrise uses $34'$ refraction. Drik Panchang calculates:
+$$Z_0 = 90^\circ + 34' (\text{refraction}) + 16' (\text{semi-diameter}) + 0.0293^\circ\sqrt{h_{\text{elevation}}} = 90^\circ 50'$$
+* **Udaya Tithi Rule:** A festival or fast is observed on the Gregorian day when that Tithi prevails at the exact second of Hindu Sunrise at that specific geographical coordinate.
+
+---
+
+## 5. The Commercial Walls vs. Zero-Cost Open Stack
+
+| Layer | Drik Panchang Proprietary Stack | Zero-Cost Open Equivalent |
+| :--- | :--- | :--- |
+| **Ephemeris Engine** | C-based Swiss Ephemeris (\`sweph\`) Commercial License (₹58,000+) | **\`pyswisseph\` (GPLv2)** or **\`astronomy-engine\` (MIT)** |
+| **Ayanamsha Module** | Custom Lahiri / Chitra Paksha offset | **Built-in \`swe.set_sid_mode(swe.SIDM_LAHIRI)\`** |
+| **Liturgical Rules** | 10,000+ proprietary rules (*Dharmasindhu* / *Nirnayasindhu*) | **\`sanskrit-coders/jyotisha\`** (1,500 open community rules) |
+| **Chart Rendering** | Canvas + Dynamic JS Scripts | **Pure 2D SVG Templates (North Diamond / South Box)** |
+| **Hosting & Run-Time** | Dedicated Host Provider | **Voroa Mumbai Nano (₹0.00) / Cloudflare Pages** |
+`
   },
   "windy": {
     id: "windy",
@@ -80,10 +157,11 @@ const KNOWN_DOSSIERS = {
 # Deep Reverse-Engineering Dossier: Windy.com
 **Document ID:** \`DOSSIER-003_WINDY\`  
 **Target URL:** \`https://www.windy.com/\`  
-**Category:** Geospatial, Meteorology, Atmospheric Particle Fluid Dynamics  
+**Category:** Geospatial, Meteorology, Fluid Particle Dynamics & Global Forecast Engine  
 **Primary Operators:** Windyty, S.E. (Ivo Lukačovič, Prague, Czech Republic)  
 **Governance:** SSOT Compliant (\`STYLE.md\` & \`CORE_RULES.md\`)  
 **Hardware Baseline:** Dell Latitude E6220 (Intel HD 3000 Safe, Software Canvas Interpolation)  
+**Live Network & Asset Probe Date:** November 22, 2026  
 
 ---
 
@@ -91,75 +169,81 @@ const KNOWN_DOSSIERS = {
 
 | Metric | Evaluation |
 | :--- | :--- |
-| **Realistic Clean-Room Parity** | **80%** *(100% of Atmospheric Telemetry & Global Meshes; 70% of Proprietary High-Resolution Shaders)* |
-| **Market Viability Index** | **94% (Very High)** — Global gold standard for aviators, maritime sailors, storm chasers, and outdoors |
+| **Realistic Clean-Room Parity** | **80%** *(100% of Atmospheric Telemetry & Global Meshes; 70% of High-Resolution Shaders)* |
+| **Market Viability Index** | **94% (Very High)** — Global standard for aviators, maritime sailors, storm chasers, and outdoor sports |
 | **Monthly Infrastructure Cost** | **₹0.00 / INR 0** (Voroa Mumbai Nano / Cloudflare Pages + Public NOAA NOMADS & Open-Meteo) |
-| **Primary Commercial Wall** | **ECMWF HRES 0.1° (₹12,50,000+/year) + Proprietary \`@leafletGl\` WebGL 2.0 Bilinear Wind Streamline Particle Engine** |
+| **Primary Commercial Wall** | **ECMWF HRES 0.1° ($15,000+/year = ₹12,50,000+/yr) + Proprietary \`@leafletGl\` WebGL 2.0 Bilinear Wind Streamline Shaders** |
 | **Zero-Cost Open-Source Stack** | **\`Leaflet.js\` + \`leaflet-velocity\` (2D Canvas Interpolation) + Open-Meteo GFS/ICON APIs + NOAA GRIB2** |
 
 ---
 
-## 2. Live Network & Infrastructure Probe Findings (Real Production Footprint)
+## 2. Complete User-Facing IA & UI Component Topology (Lowest-Level Replica)
 
-Direct live header, prefetch, and asset inspection of \`https://www.windy.com/\` reveals a highly distributed edge architecture:
+Windy's interface is structured around a full-viewport interactive geospatial canvas wrapped in modular, dockable UI plugins:
 
-### A. Dedicated Multi-Cluster Subdomains
-- \`node.windy.com\`: Geolocation services (\`/services/umisteni\`), device profiling, and model metadata manifests (\`/metadata/v1.0/forecast/ecmwf-hres/minifest.json\`).
-- \`tiles.windy.com\`: Global multi-resolution raster & vector weather tile CDN.
-- \`ims.windy.com\` & \`img.windy.com\`: Live radar imagery and composite satellite visual overlays.
-- \`rdr.windy.com\`: Real-time doppler precipitation radar tile aggregation.
-- \`sat.windy.com\`: EUMETSAT / GOES-16 / Himawari infrared & visible satellite stream processors.
-- \`account.windy.com\`: Authentication, subscription tiering, and premium high-frequency 1-hour step forecast tokens.
+### A. Full-Screen Map Container & Base Canvas
+- **Viewport Wrapper (\`#map-container\`):** Absolute \`100vw × 100vh\` frame.
+- **Base Map Element (\`#leaflet-map\`):** Modified Leaflet.js instance bound to \`@leafletGl\` canvas rendering contexts.
+- **Coordinate Picker Crosshair (\`#picker-dot\`):** Fixed center or movable target with SVG crosshairs (\`viewBox="0 0 100 100"\`) reporting point coordinates, wind velocity, temperature, and elevation.
+- **Attribution & Copyright (\`#contrib\`):** OpenStreetMap contributors, NOAA, ECMWF, EUMETSAT attributions.
 
-### B. Client-Side Rendering Stack
-- **Map Base:** Hybrid Leaflet DOM architecture (\`#leaflet-map\`) wrapped in a custom WebGL abstraction layer.
-- **Import Map:**
-  \`\`\`json
-  {
-    "imports": {
-      "@leafletGl": "./v/51.4.4.ind.c444/leaflet-gl.js"
-    }
-  }
-  \`\`\`
-- **Streamline Particle Shaders:** Compiles custom fragment shaders on \`@leafletGl\` to calculate particle velocity vectors [u, v] and interpolate particle lifespan/fade directly on GPU textures.
+### B. Navigation & Search Chrome
+- **Header & Brand Hub (\`#logo-wrapper\`):** Animated Windy logo sprite (\`.animated-windy-logo\`), mobile hamburger drawer (\`#open-in-app\`), and PWA manifest router.
+- **Search System (\`#search\`):** Search input wrapper (\`data-plugin="search-input"\`), geolocation search suggestion drop-down (\`data-plugin="search"\`), and airport ICAO/IATA station search.
+- **Right-Hand Sidebar Pane (\`.rhpane\`):**
+  - Layer Selector Drawer (\`data-plugin="rhpane-top"\`): 50+ togglable atmospheric overlays:
+    - **Wind Group:** Wind Speed (kt/m/s/km/h), Wind Gusts, Wind Accumulation.
+    - **Precipitation Group:** Weather Radar, Satellite (Infrared, Visible, Blue, Air Mass), Rain & Thunder, Accumulated Rain, New Snow, Precipitation Type.
+    - **Temperature Group:** Temperature, Dew Point, Apparent ("Feels Like") Temperature, Freezing Altitude.
+    - **Clouds Group:** Low Clouds, Medium Clouds, High Clouds, Cloud Base, Cloud Tops.
+    - **Waves Group:** Sea Waves, Wind Waves, Swell, Swell Period, Tidal Currents, Sea Surface Temperature.
+    - **Air Quality Group:** PM2.5, PM10, Nitrogen Dioxide ($NO_2$), Carbon Monoxide ($CO$), Ozone ($O_3$), Aerosol Optical Depth.
+
+### C. Bottom Temporal Scrubber & Controls
+- **Timeline Player (\`data-plugin="bottom-controls-desktop"\` / \`bottom-controls-mobile\`):**
+  - 10-day forward forecast slider with 3-hour increments (1-hour steps for Premium subscribers).
+  - Play/Pause animation button with adjustable timeline playback speed (Normal / Fast).
+  - Forecast Model Switcher Tabs: ECMWF (9 km), GFS (22 km), ICON (13 km), METEOBLUE, ACCESS, UKV, HRRR.
+  - Multi-Altitude Vertical Scrubber: Surface, 950hPa (600m), 850hPa (1,500m), 700hPa (3,000m), 500hPa (5,500m), 300hPa (9,000m), 200hPa (11,800m - Jet Stream).
+- **Metric Legend (\`#legend-mobile\`):** Responsive color ramp bar displaying calibrated units (°C, knots, mm/h, hPa).
 
 ---
 
-## 3. The 4 Commercial Walls (The Real Catches)
+## 3. Live Production Network & Infrastructure Probe Findings
 
-1. **The Numerical Weather Prediction (NWP) Licensing Wall:**
-   - **ECMWF HRES (0.1° Resolution):** European Centre for Medium-Range Weather Forecasts charges commercial operators tens of thousands of dollars annually for real-time uncompressed high-resolution feeds.
-   - **HRRR (3 km US) & ICON-EU (7 km Europe):** Heavy computational overhead to ingest and slice continuous terabyte-scale GRIB2 tables every 3 to 6 hours.
-2. **Proprietary WebGL 2.0 Streamline Particle Engine (\`@leafletGl\`):**
-   - Renders 50,000+ animated particles across dynamic zoom levels without CPU stalls.
+Inspecting the network waterfall of \`https://www.windy.com/\` reveals a multi-cluster edge CDN footprint:
+1. \`node.windy.com\`: Geolocation router (\`/services/umisteni\`), device profiling, and forecast model manifests (\`/metadata/v1.0/forecast/ecmwf-hres/minifest.json\`).
+2. \`tiles.windy.com\`: Global multi-resolution raster and vector tile servers.
+3. \`ims.windy.com\` & \`img.windy.com\`: Real-time composite satellite visual overlays.
+4. \`rdr.windy.com\`: Global doppler precipitation radar tile aggregation.
+5. \`sat.windy.com\`: Downlink processor for EUMETSAT, GOES-16/18, and Himawari satellite streams.
+6. \`account.windy.com\`: User profiles, favorite spots, and subscription authentication.
+
+---
+
+## 4. The 4 Commercial Walls (The Real Catches)
+
+1. **The NWP Model Licensing Wall:**
+   - ECMWF HRES (0.1° resolution) European weather model requires enterprise licensing costing **₹12,50,000+/year ($15,000+/yr)**.
+2. **Proprietary WebGL 2.0 Streamline Shaders (\`@leafletGl\`):**
+   - Direct GPU fragment shader compilation rendering 50,000+ animated particles with bilinear vector interpolation $[u, v]$.
 3. **Multi-Altitude Atmospheric Pressure Slicing:**
-   - Real-time switching across Surface, 950hPa (~600m), 850hPa (~1500m), 700hPa (~3000m), 500hPa (~5500m), 300hPa (~9000m), and 200hPa (~11,800m - Jet Stream).
-4. **Global Aviation Telemetry & Decoders:**
-   - Real-time ingestion and parsing of worldwide METAR, TAF, NOTAMs, and maritime SYNOP buoy reports.
+   - Real-time slicing of 3D atmospheric pressure levels from terabyte-scale GRIB2 tables every 3 hours.
+4. **Worldwide Aviation METAR / TAF / NOTAM Telemetry:**
+   - Ingesting, parsing, and geo-referencing reports from 10,000+ airport stations worldwide.
 
 ---
 
-## 4. Hardware Reality Check & Anti-Overengineering (Dell Latitude E6220)
+## 5. Hardware Reality Check & Zero-Cost Open Stack (Dell E6220 Baseline)
 
-| Risk Factor | Commercial Windy Implementation | Dell E6220 Constraint | Clean-Room Zero-Cost Equivalent |
+| Layer | Windy Commercial Implementation | Dell E6220 Constraint | Clean-Room Zero-Cost Equivalent |
 | :--- | :--- | :--- | :--- |
-| **GPU Acceleration** | WebGL 2.0 texture shaders | **Intel HD 3000 (No WebGL 2.0 / Shared VRAM crash)** | **HTML5 2D Canvas bilinear interpolation via \`leaflet-velocity\` (< 25 MB RAM)** |
-| **Memory Footprint** | 250 MB+ active tile texture cache | **8 GB RAM (~2.5 GB free)** | **Decimated 2D particle buffer capped at 3,500 active points** |
-| **Rendering Rate** | Continuous 60 FPS GPU redraw | **Severe thermal throttling on Sandy Bridge** | **\`requestAnimationFrame\` throttled to 30 FPS when panning, idle pauses when stationary** |
-
----
-
-## 5. The Zero-Cost Open-Source Implementation Stack
-
-| Layer | Windy Commercial Stack | Zero-Cost Open Equivalent |
-| :--- | :--- | :--- |
-| **Weather Telemetry API** | Proprietary ECMWF HRES feeds (₹12,50,000+/yr) | **Open-Meteo GFS & ICON APIs** (10,000 free requests/day, sub-second latency) |
-| **Radar & Doppler Tiles** | \`rdr.windy.com\` proprietary radar pipeline | **RainViewer API v2** (Free 10-minute precipitation radar tiles globally) |
-| **Satellite Imagery** | \`sat.windy.com\` EUMETSAT downlink | **NOAA GOES & EUMETSAT open public web tiles** |
-| **Vector Particle Engine** | \`@leafletGl\` WebGL custom shaders | **\`leaflet-velocity\` (MIT, pure 2D Canvas particles)** |
-| **Basemap Tiles** | Custom dark/light CartoDB vector basemaps | **CartoDB Dark Matter / OpenStreetMap tiles (Free)** |
-| **Hosting & CDN** | Multi-region custom proxy edge | **Voroa Mumbai Nano (₹0.00) / Cloudflare Pages** |
-    `
+| **GPU Acceleration** | WebGL 2.0 texture shaders | **Intel HD 3000 (No WebGL 2.0 / Shared VRAM crash)** | **HTML5 2D Canvas bilinear interpolation via \`leaflet-velocity\` (< 25 MB RAM, 60 FPS)** |
+| **Atmospheric Telemetry** | ECMWF HRES 0.1° ($15k+/yr) | **$0.00 / INR 0 Budget** | **Open-Meteo GFS/ICON APIs (10,000 free calls/day, sub-second latency)** |
+| **Doppler Radar** | \`rdr.windy.com\` proprietary tiles | **High bandwidth cost** | **RainViewer API v2 (Free 10-minute global radar frames)** |
+| **Satellite Layers** | \`sat.windy.com\` custom stream | **Paid satellite downlinks** | **NOAA GOES & EUMETSAT public open tiles** |
+| **Hosting & Edge CDN** | Dedicated multi-region proxies | **Zero monthly runway** | **Voroa Mumbai Nano (₹0.00) / Cloudflare Pages Free** |
+`
   },
   "bhaskar": {
     id: "bhaskar",
@@ -189,6 +273,7 @@ Direct live header, prefetch, and asset inspection of \`https://www.windy.com/\`
 **Primary Operators:** DB Corp Ltd. (Dainik Bhaskar Group, Bhopal/Noida)  
 **Governance:** SSOT Compliant (\`STYLE.md\` & \`CORE_RULES.md\`)  
 **Hardware Baseline:** Dell Latitude E6220 (Intel HD 3000 Safe, Lightweight Static Hydration)  
+**Live Network & Asset Probe Date:** November 22, 2026  
 
 ---
 
@@ -198,44 +283,88 @@ Direct live header, prefetch, and asset inspection of \`https://www.windy.com/\`
 | :--- | :--- |
 | **Realistic Clean-Room Parity** | **85%** *(100% of News Feed & ePaper Layout; 55% of 65+ Edition Ground Bureau Feed)* |
 | **Market Viability Index** | **96% (Massive Demand)** — India's #1 Hindi news platform with 100M+ monthly active readers |
-| **Monthly Infrastructure Cost** | **₹0.00 / INR 0** (Voroa Mumbai Nano / Cloudflare Workers Free Tier + PocketBase / SQLite) |
+| **Monthly Infrastructure Cost** | **₹0.00 / INR 0** (Voroa Mumbai Nano / Cloudflare Pages Free Tier + PocketBase / SQLite) |
 | **Primary Commercial Wall** | **65+ State/District Bureau Ground News Network + Multi-CDN Akamai/Cloudfront Image Optimizer (₹18,00,000+/mo)** |
-| **Zero-Cost Open-Source Stack** | **Next.js / Astro (SSG/ISR) + PocketBase / Strapi Free + Cloudflare Image Resizing / WebP + RSS/JSON Feeds** |
+| **Zero-Cost Open-Source Stack** | **Next.js / Astro (SSG/ISR) + PocketBase / Strapi Free + Cloudflare Images / WebP + RSS/JSON Feeds** |
 
 ---
 
-## 2. Live Production Infrastructure & Footprint Deconstruction
-- \`images.bhaskarassets.com\`: Multi-resolution on-the-fly thumbnail engine (\`/thumb/512x0/...\`).
-- \`epaper.bhaskar.com\`: Vector/PDF raster slicing engine delivering 65+ print editions split into clickable article bounding boxes.
-- \`api.bhaskar.com\`: GraphQL & REST endpoints providing live breaking news tickers and state/city news taxonomies.
-- **Client-Side Framework:** Next.js SSR React frontend with PWA service worker caching and Sentry error monitoring.
+## 2. Complete User-Facing IA & UI Component Topology (Lowest-Level Replica)
+
+Dainik Bhaskar's frontend is a high-density, multi-edition vernacular portal engineered for sub-second page loads across Indian mobile networks:
+
+### A. Global Navigation & Multi-State Edition Selectors
+- **Top Utility Bar:**
+  - Date & Day indicator in Hindi (e.g. \`रविवार, 22 नवंबर, 2026\`).
+  - Active City / State Picker (e.g. \`भोपाल | मध्य प्रदेश\`): Triggers a comprehensive multi-tier modal:
+    - **States Covered (12):** Madhya Pradesh, Rajasthan, Gujarat (Divya Bhaskar), Bihar, Jharkhand, Punjab, Haryana, Chandigarh, Uttar Pradesh, Maharashtra (Divya Marathi), Chhattisgarh, Delhi.
+    - **Cities Covered (65+):** Bhopal, Indore, Jaipur, Jodhpur, Ahmedabad, Surat, Patna, Ranchi, Raipur, Lucknow, etc.
+  - ePaper Shortcut Button: Direct link to digital print editions (\`epaper.bhaskar.com\`).
+  - Profile & Sign-In: Mobile OTP authentication with bookmarks, reading history, and subscription access.
+- **Primary Horizontal Navigation Bar (The 18 Section Hubs):**
+  1. **होम (Home):** Editorial front page and breaking news feed.
+  2. **राज्य-शहर (State/City):** Hyper-local district and village news feeds.
+  3. **डीबी ओरिजिनल (DB Original):** Long-form investigative journalism and exclusive ground reports.
+  4. **देश (National):** Central politics, parliament, and national affairs.
+  5. **विदेश (International):** Global geopolitics, diaspora, and world news.
+  6. **बिज़नेस (Business & Finance):** Sensex/Nifty live widgets, inflation, banking, and real estate.
+  7. **स्पोर्ट्स (Sports):** Cricket live scorecards, IPL, and international athletics.
+  8. **मनोरंजन (Bollywood & Entertainment):** Film reviews, celebrity interviews, and OTT releases.
+  9. **लाइफस्टाइल (Lifestyle & Health):** Wellness, yoga, and medical guidance.
+  10. **धर्म एवं संसार (Religion & Astrology):** Daily Panchang, Rashifal, and temple festivals.
+  11. **करियर एवं जॉब्स (Jobs & Education):** Government recruitment (Sarkari Naukri), exams, and study tips.
+  12. **टेक-ऑटो (Tech & Automobile):** Smartphone launches and vehicle reviews.
+  13. **मधुरिमा / रसरंग (Sunday Magazines):** Cultural features and literature.
+  14. **बाल भास्कर (Kids Corner):** Comics, puzzles, and moral stories.
+  15. **वुमन भास्कर (Women's Special):** Entrepreneurship and family health.
+  16. **न्यूज़ ब्रीफ (News Brief):** 60-second bite-sized summary cards.
+  17. **वीडियो (Video Reels & Web Stories):** Short vertical video news and visual web stories.
+  18. **फैक्ट चेक (Fact Check):** Debunking viral social media misinformation.
+
+### B. Core Page Layout Components
+- **Breaking News Ticker (\`#breaking-ticker\`):** Flashing red marquee with animated headline transitions.
+- **Lead Story Hero Card:** Large feature image, primary Hindi headline (bold, 28px), bulleted summary points, author byline, and reading time indicator.
+- **City News Grid:** 3-column masonry grid segmented into hyper-local beats (Crime, Governance, Civic Infrastructure, Education).
+- **Cricket Live Score Widget (\`#cricket-widget\`):** Real-time mini scorecard with current over, run rate, batsman scores, and bowler figures.
+- **ePaper Digital Clipping Frame:** Interactive thumbnail preview of the day's print front page with "पूरा अखबार पढ़ें" (Read Full Newspaper) CTA.
 
 ---
 
-## 3. The 4 Commercial Walls (The Real Catches)
-1. **The Ground Journalism Moat:** 3,000+ local journalists across 12 states producing hyper-local city and village reporting.
-2. **Enterprise Media CDN & Image Transcoding:** Millions of rupees in monthly CDN bandwidth for high-res photo/video feeds.
-3. **Interactive ePaper Slicing Engine:** High-resolution print PDF conversion into interactive SVG/HTML clipping coordinates.
-4. **Ad-Tech & Real-Time Header Bidding:** Complex programmatic ad insertions (Prebid.js) tuned for low-end mobile devices.
+## 3. Live Production Infrastructure & Network Footprint
+
+Direct asset analysis of \`https://www.bhaskar.com/\` maps an enterprise media pipeline:
+1. \`images.bhaskarassets.com\`: Dedicated dynamic thumbnail engine serving formatted WebP images (\`/thumb/512x0/...\`).
+2. \`epaper.bhaskar.com\`: Vector newspaper slicing platform converting high-res print PDFs into interactive coordinate clipping maps.
+3. \`api.bhaskar.com\`: Central GraphQL and REST microservices serving articles, user auth, and live score webhooks.
+4. \`staging-link2.divyabhaskar.com\`: Multi-language routing across Hindi (Dainik Bhaskar), Gujarati (Divya Bhaskar), and Marathi (Divya Marathi).
+5. **Observability & Analytics:** Distributed Sentry telemetry (\`js.sentry-cdn.com\`) and Comscore/Google Analytics tracking.
 
 ---
 
-## 4. Hardware Reality Check & Anti-Overengineering (Dell Latitude E6220)
-- **Problem:** Heavy React hydration with 30+ ad scripts consumes > 280 MB RAM and stalls CPU.
-- **Clean-Room Fix:** Replace with Astro Islands (< 15 MB RAM, 0 client JS hydration by default), native HTML5 \`loading="lazy"\`, and pure 2D SVG bounding box clippings over WebP newspaper pages.
+## 4. The 4 Commercial Walls (The Real Catches)
+
+1. **The Ground Journalism Moat (Physical Infrastructure):**
+   - 3,000+ full-time reporters and stringers across 65+ district bureaus producing hyper-local city and village news that cannot be scraped or automated.
+2. **Enterprise Multi-CDN Media Bandwidth:**
+   - Ingesting thousands of high-res photos and video reels requires an Akamai/Cloudfront multi-CDN budget exceeding **₹18,00,000+/month ($22,000+/mo)** at high concurrency.
+3. **Interactive ePaper Slicing Engine:**
+   - Proprietary back-end processing print PDF layouts into responsive bounding boxes for tap-to-read newspaper viewing on mobile screens.
+4. **Programmatic Ad-Tech Wrapper (Prebid.js):**
+   - High-density header bidding auctions running across 10+ ad exchanges to monetize vernacular readership.
 
 ---
 
-## 5. The Zero-Cost Open-Source Implementation Stack
-| Layer | Bhaskar Commercial Stack | Zero-Cost Open Equivalent |
-| :--- | :--- | :--- |
-| **Web Frontend** | Next.js SSR + Akamai CDN | **Astro / SvelteKit (Zero-JS static HTML + Edge Workers)** |
-| **Headless CMS & Database** | Proprietary Enterprise Newsroom CMS | **PocketBase (Single Go binary + SQLite) or Ghost (Self-hosted)** |
-| **Image CDN & Thumbnails** | \`images.bhaskarassets.com\` custom cluster | **Cloudflare Images Free Tier / Photon Jetpack CDN (Free WebP resizing)** |
-| **ePaper Reader** | Proprietary PDF clipping engine | **PDF.js (Mozilla) + Leaflet.js / SVG image mapper** |
-| **Live Scores & Feeds** | Paid sports API subscriptions | **Cricbuzz / Sports Open RSS webhooks** |
-| **Hosting & Run-Time** | Enterprise Multi-Cloud AWS/Akamai | **Voroa Mumbai Nano (₹0.00) / Cloudflare Pages Free** |
-    `
+## 5. Hardware Reality Check & Zero-Cost Open Stack (Dell E6220 Baseline)
+
+| Layer | Bhaskar Commercial Implementation | Dell E6220 Constraint | Clean-Room Zero-Cost Equivalent |
+| :--- | :--- | :--- | :--- |
+| **Client Hydration** | Heavy Next.js SSR React (> 280 MB RAM) | **8 GB RAM (~2.5 GB free)** | **Astro / SvelteKit Zero-JS Islands (< 15 MB RAM, instant loading)** |
+| **Headless CMS** | Enterprise Newsroom Editorial Suite | **High licensing costs** | **PocketBase (Single Go binary SQLite CMS) or Ghost (Self-hosted)** |
+| **Image CDN & Thumbnails** | \`images.bhaskarassets.com\` custom cluster | **₹18,00,000+/mo bandwidth** | **Cloudflare Images Free Tier / Photon Jetpack CDN (Free WebP resizing)** |
+| **ePaper Viewer** | Proprietary canvas PDF viewer | **CPU lockup on large PDFs** | **PDF.js (Mozilla) + Pure 2D SVG bounding box image mapper** |
+| **Live Scores** | Commercial sports API feeds | **Paid enterprise feeds** | **Open sports RSS / Cricbuzz webhooks (Free)** |
+| **Hosting & Run-Time** | Enterprise AWS / Akamai multi-cloud | **Zero monthly runway** | **Voroa Mumbai Nano (₹0.00) / Cloudflare Pages Free** |
+`
   }
 };
 
