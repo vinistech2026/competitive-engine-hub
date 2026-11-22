@@ -722,13 +722,42 @@ function inferNicheTaxonomy(rawTarget) {
     pathname = String(rawTarget).split('/').slice(1).join('/').toLowerCase();
   }
 
-  const tokenStream = (hostname + ' ' + pathname).replace(/[^a-z0-9]/g, ' ');
+  const domainBase = hostname.split('.')[0];
+  const tokenStream = (domainBase + ' ' + hostname + ' ' + pathname).replace(/[^a-z0-9]/g, ' ');
+
+  // Direct Known Brand & Domain Taxonomy Map
+  const KNOWN_BRANDS = {
+    "ugaoo": "D2C E-Commerce & Retail",
+    "nurserylive": "D2C E-Commerce & Retail",
+    "fernsnpetals": "D2C E-Commerce & Retail",
+    "fnp": "D2C E-Commerce & Retail",
+    "myntra": "D2C E-Commerce & Retail",
+    "nykaa": "D2C E-Commerce & Retail",
+    "boat": "D2C E-Commerce & Retail",
+    "mamaearth": "D2C E-Commerce & Retail",
+    "zepto": "D2C E-Commerce & Retail",
+    "blinkit": "D2C E-Commerce & Retail",
+    "swiggy": "D2C E-Commerce & Retail",
+    "zomato": "D2C E-Commerce & Retail",
+    "zerodha": "Fintech, Trading & Web3",
+    "groww": "Fintech, Trading & Web3",
+    "upstox": "Fintech, Trading & Web3",
+    "angelone": "Fintech, Trading & Web3",
+    "moneycontrol": "Fintech, Trading & Web3",
+    "ndtv": "Media, Publishing & Vernacular News",
+    "aajtak": "Media, Publishing & Vernacular News",
+    "thehindu": "Media, Publishing & Vernacular News",
+    "indianexpress": "Media, Publishing & Vernacular News",
+    "accuweather": "Geospatial, Weather & Environmental",
+    "skymet": "Geospatial, Weather & Environmental"
+  };
 
   // Domain Taxonomy Matrix
+  
   const TAXONOMY_RULES = [
     {
       category: "D2C E-Commerce & Retail",
-      keywords: ["shop", "store", "buy", "cart", "nursery", "plant", "seed", "garden", "flower", "pot", "fashion", "apparel", "wear", "shoes", "beauty", "cosmetic", "mart", "bazaar", "retail", "gift"],
+      keywords: ["shop", "store", "buy", "cart", "nursery", "ugaoo", "plant", "plants", "seed", "seeds", "garden", "gardening", "flower", "flowers", "pot", "pots", "planter", "planters", "fertilizer", "soil", "fashion", "apparel", "wear", "shoes", "beauty", "cosmetic", "mart", "bazaar", "retail", "gift", "d2c"],
       commercialCatch: "Multi-carrier physical logistics SLA, perishable/inventory holding mortality & 2-3% payment/e-commerce platform fees",
       openStack: "Astro / Next.js Headless + PocketBase / SQLite + Tailwind UI + Minisearch",
       parity: 75,
@@ -797,6 +826,14 @@ function inferNicheTaxonomy(rawTarget) {
       }
     }
   ];
+
+  
+  // Check direct brand mapping first
+  if (KNOWN_BRANDS[domainBase]) {
+    const targetCat = KNOWN_BRANDS[domainBase];
+    const matchedRule = TAXONOMY_RULES.find(r => r.category === targetCat);
+    if (matchedRule) return matchedRule;
+  }
 
   // Match keyword frequency
   let bestCategory = null;
