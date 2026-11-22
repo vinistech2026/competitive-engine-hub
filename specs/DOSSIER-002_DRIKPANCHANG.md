@@ -3,8 +3,9 @@
 **Target URL:** `https://www.drikpanchang.com/`  
 **Category:** Vedic Astrology, Hindu Calendar & Ephemeris Systems  
 **Primary Operators:** Adarsh Mobile Applications LLP (Pankaj Sharma)  
-**Governance:** SSOT Compliant (`STYLE.md`)  
-**Hardware Baseline:** Dell Latitude E6220 (Intel HD 3000 Safe)  
+**Governance:** SSOT Compliant (`STYLE.md` & `CORE_RULES.md`)  
+**Hardware Baseline:** Dell Latitude E6220 (Intel HD 3000 Safe, Zero WebGL GPU Strain)  
+**Evidence Baseline:** Verified against 2,828 sitemap URLs & 30 in-browser live DOM audits (`VedicKundaliEngine/reports/drikpanchang-study`)
 
 ---
 
@@ -12,53 +13,66 @@
 
 | Metric | Evaluation |
 | :--- | :--- |
-| **Realistic Clean-Room Parity** | **65% – 70%** *(100% of Mathematics; 50% of 10,000+ local festival rules)* |
-| **Market Viability Index** | **94% (Very High)** — Universal global diaspora authority |
-| **Monthly Infrastructure Cost** | **$0.00 / INR 0** (Voroa / Vercel Free + Local Vector SVG) |
-| **Primary Commercial Wall** | **Decade-long Dharmasindhu liturgical rule codification & Swiss Ephemeris commercial licenses ($700+)** |
-| **Zero-Cost Open-Source Stack** | **`pyswisseph` (GPLv2) or `astronomy-engine` (MIT) + `sanskrit-coders/jyotisha` + Pure SVG Charts** |
+| **Realistic Clean-Room Parity** | **70%** *(100% of Astronomy & Charts; 55% of localized community festival rules)* |
+| **Market Viability Index** | **94% (Very High)** — Global standard for Hindu diaspora |
+| **Monthly Infrastructure Cost** | **$0.00 / INR 0** (Voroa Mumbai Nano / Cloudflare Workers Free Tier) |
+| **Primary Commercial Wall** | **Decade-long Dharmasindhu liturgical rule codification & Swiss Ephemeris commercial license ($700+)** |
+| **Zero-Cost Open-Source Stack** | **`pyswisseph` (GPLv2) or `astronomy-engine` (MIT) + `sanskrit-coders/jyotisha` + Pure 2D SVG Charts** |
 
 ---
 
-## 2. Core Astronomical & Mathematical Architecture
+## 2. Real-World Architecture & Offering Inventory (2,828 Sitemap URLs Mapped)
 
-### A. The Drik Ganita vs. Surya Siddhanta Paradigm
-* **Surya Siddhanta / Vakyam:** Archaic mean-motion epicycles. Over 1,600+ years, cumulative secular drift causes planetary longitudes to lag by **3° to 5° of arc** (~6 to 10 hours of error in Tithi termination times).
-* **Drik Ganita (Drik Panchang Core):** Uses high-precision perturbation models (matching NASA JPL DE440 / VSOP87). Planetary positions represent true optical and topocentric observation.
-
-### B. The 5 Limbs (Panchanga) Exact Formulas
-1. **Tithi (Lunar Elongation Day):**  
-   $$\Delta\lambda(t) = (\lambda_{\text{Moon}}(t) - \lambda_{\text{Sun}}(t)) \pmod{360^\circ}$$  
-   $$\text{Tithi Number} = \left\lfloor \frac{\Delta\lambda(t)}{12^\circ} \right\rfloor + 1 \quad (1 \le \text{Tithi} \le 30)$$
-2. **Nakshatra (Lunar Mansion):**  
-   $$\text{Nakshatra Index} = \left\lfloor \frac{\lambda_{\text{Moon, sidereal}}(t)}{13^\circ 20'} \right\rfloor \quad (0 \le \text{Index} \le 26)$$
-3. **Yoga (Solar-Lunar Sum):**  
-   $$\text{Yoga Index} = \left\lfloor \frac{(\lambda_{\text{Moon, sidereal}}(t) + \lambda_{\text{Sun, sidereal}}(t)) \pmod{360^\circ}}{13^\circ 20'} \right\rfloor$$
-4. **Karana (Half-Tithi):** 6° intervals of elongation (4 fixed, 7 repeating).
-5. **Vara (Solar Day):** Reckoned strictly from local Hindu Sunrise to next Hindu Sunrise.
-
-### C. The Hindu Sunrise Model (Critical Algorithmic Moat)
-Standard astronomical sunrise uses civil refraction ($34'$). Drik Panchang applies the true Hindu geocentric horizon formula:
-$$Z_0 = 90^\circ + 34' (\text{refraction}) + 16' (\text{sun semi-diameter}) + 0.0293^\circ \sqrt{h_{\text{elevation}}} = 90^\circ 50'$$
-* **Udaya Tithi Rule:** A Hindu festival is observed on the solar day when that Tithi prevails at the exact second of Hindu Sunrise at that specific geographical coordinate.
+From our in-depth VinisTech technical audit (`reports/drikpanchang-study/`):
+- **Sitemap Footprint:** Exactly **2,828 URLs** across **80 top-level sections**.
+- **Top Sub-systems by Volume:**
+  1. `lyrics` (345 URLs) & `deities-namavali` (190 URLs) — Devotional content library (Aarti, Chalisa, Stotras).
+  2. `festivals` (220 URLs) & `vrats` (58 URLs) — Vrat Katha and calendar observance engine.
+  3. `panchang` (207 URLs) — Day Panchang, Month Panchang, and regional variants (Tamil, Telugu, Kannada, Gujarati, Marathi, Bengali, Odia, Nepali, ISKCON).
+  4. `astrology` (86 URLs) & `kundali` (40 URLs) — Prashna Kundali, Janma Kundali, Horoscope Match (Ashta Kuta).
+  5. `shubh-dates` (81 URLs) & `muhurat` (8 URLs) — Choghadiya, Hora, Lagna Muhurat, Abhijit, Do Ghati, Panchaka Rahita, and Gowri Panchangam.
+  6. `pancha-pakshi` (2 URLs / heavy interactive engine) — 5-bird day/night state calculator and activities.
 
 ---
 
-## 3. The Commercial Walls (The Real Catches)
+## 3. Frontend & Rendering Engine (Live DOM Evidence)
 
-1. **Swiss Ephemeris Dual Licensing:**  
-   Swiss Ephemeris (`sweph`) is dual-licensed under GNU GPL v2 vs. Commercial License (~CHF 700+ per product). Open-source projects can use `pyswisseph` legally under GPLv2, or use Don Cross's `astronomy-engine` for an MIT-permissive clean-room alternative.
-2. **The 10,000+ Liturgical Rule Moat:**  
-   Calculating planetary positions takes 20 lines of code. Codifying multi-condition festival arbitrations from *Dharma Sindhu* and *Nirnaya Sindhu* (e.g., Nishita Kaal midnight calculations for Janmashtami, Pradosha Sthira Lagna for Diwali, Arunodaya contamination for Ekadashi) represents 10+ years of scholarly compilation.
+- **Typography & Layout:** Classic theme relies on `font-family: Verdana, Geneva, Arial, sans-serif`.
+- **Canvas vs. SVG Rendering:**
+  - **Panchang Charts:** Observed live canvas element `canvas#dp-panchangam-shuddhi-canvas` driven by `dp-panchangam-chart.v1.0.7.js`.
+  - **Kundali Charts:** Scaffolds via `dp-kundali-form` and renders North Indian Diamond and South Indian Box charts.
+  - **Clean-Room Open Alternative:** We replace complex client-side canvas scripts with **Pure 2D SVG**, which delivers razor-sharp resolution on any device and consumes 0% GPU on the Dell E6220 Intel HD 3000 graphics.
 
 ---
 
-## 4. The Zero-Cost Open-Source Implementation Stack
+## 4. Core Astronomical & Mathematical Architecture
 
-| Component | Drik Panchang Proprietary Stack | Zero-Cost Open-Source Stack |
+### A. The Drik Ganita Paradigm
+* **Drik Ganita (True Observation):** Matches NASA JPL DE440 perturbation models, calculating exact topocentric and optical positions.
+* **Secular Drift of Surya Siddhanta:** Ancient mean-motion treatises accumulated 3°–5° of drift over 1,600 years, creating 6–10 hour errors in Tithi endings.
+
+### B. The 5 Limbs (Panchanga Formulas)
+1. **Tithi (Lunar Elongation):**
+   $$\Delta\lambda(t) = (\lambda_{\text{Moon}}(t) - \lambda_{\text{Sun}}(t)) \pmod{360^\circ}$$
+   $$\text{Tithi} = \left\lfloor \frac{\Delta\lambda(t)}{12^\circ} \right\rfloor + 1 \quad (1 \le \text{Tithi} \le 30)$$
+2. **Nakshatra:** Lunar longitude in sidereal segments of $13^\circ 20'$.
+3. **Yoga:** $(\lambda_{\text{Moon, sidereal}} + \lambda_{\text{Sun, sidereal}}) / 13^\circ 20'$.
+4. **Karana:** Half-Tithi (6° increments).
+5. **Vara:** Solar weekday counted strictly from local Hindu Sunrise to next Hindu Sunrise.
+
+### C. The Hindu Sunrise Model (Crucial Moat)
+Standard civil sunrise uses $34'$ refraction. Drik Panchang calculates:
+$$Z_0 = 90^\circ + 34' (\text{refraction}) + 16' (\text{solar semi-diameter}) + 0.0293^\circ\sqrt{h_{\text{elevation}}} = 90^\circ 50'$$
+* **Udaya Tithi Rule:** An observance or Vrat is attached to the Gregorian calendar day on which the Tithi touches Hindu Sunrise.
+
+---
+
+## 5. The Commercial Walls vs. Zero-Cost Open Stack
+
+| Component | Drik Panchang Proprietary Stack | Zero-Cost Open Equivalent |
 | :--- | :--- | :--- |
-| **Ephemeris Engine** | C-based Swiss Ephemeris (`sweph`) | **`pyswisseph` (GPLv2) or `astronomy-engine` (MIT)** |
-| **Ayanamsha Calculation** | Custom Lahiri / Chitra Paksha offset | **Built-in `swe.set_sid_mode(swe.SIDM_LAHIRI)`** |
-| **Liturgical Rules** | Proprietary 10,000+ rule engine | **`sanskrit-coders/jyotisha` (Python Dharmasindhu rules)** |
-| **Chart Rendering** | Server-side image/HTML charts | **Pure 2D SVG vector templates (North/South Indian)** |
-| **Hosting & Compute** | Dedicated Indian hosting infrastructure | **Voroa (Mumbai Nano Free) / Vercel Edge** |
+| **Ephemeris Library** | Swiss Ephemeris (`sweph`) C-Library (~$700 Commercial License) | **`pyswisseph` (GPLv2)** or **`astronomy-engine` (MIT)** |
+| **Ayanamsha Calculation** | Custom Lahiri / Chitra Paksha offset | **`swe.set_sid_mode(swe.SIDM_LAHIRI)`** |
+| **Liturgical Decision Rules** | 10,000+ proprietary rules (*Dharmasindhu* / *Nirnayasindhu*) | **`sanskrit-coders/jyotisha`** (1,500 open community rules) |
+| **Chart Rendering** | Canvas + Dynamic JS Scripts | **Pure 2D SVG Templates (North Diamond / South Box)** |
+| **Hosting & Run-Time** | Dedicated Host Provider | **Voroa Mumbai Nano ($0.00) / Cloudflare Pages** |

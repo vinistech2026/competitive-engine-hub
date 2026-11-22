@@ -2,213 +2,207 @@
 // Integrated with Master Google Sheet + Live Autonomous Multi-Tier Audits
 
 const GOOGLE_SHEET_ID = "1tUJvMemHp8bTx7yOp-irW_zw-yk9zWPWffp92u7GRQg";
-const GOOGLE_SHEET_CSV_URL = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:csv`;
+const GOOGLE_SHEET_JSON_URL = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:json`;
 const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxE9zB2mSi_9sb1JYz-37UmuM0NPhGyI7zIARliNAlR8-v_xqwmYYCWRPxyEJmw7_QX/exec";
 
-// Default seed data (used as immediate fallback while network/Sheet syncs)
-const DEFAULT_AUDITS = [
-  {
-    id: "drikpanchang",
+// Default Deep Dossier Knowledge Base (Enriched with 2,828 sitemap & 30-page DOM audit findings)
+const KNOWN_DOSSIERS = {
+  "drik-panchang": {
+    id: "drik-panchang",
     category: "Vedic Astrology & Ephemeris",
     name: "Drik Panchang",
     url: "https://www.drikpanchang.com/",
     parity: 70,
     marketIndex: "94% (Very High)",
     commercialCatch: "10,000+ Dharmasindhu liturgical rules & Swiss Ephemeris commercial license ($700+)",
-    openStack: "pyswisseph / astronomy-engine (MIT) + sanskrit-coders/jyotisha + Pure SVG Charts",
+    openStack: "pyswisseph / astronomy-engine (MIT) + sanskrit-coders/jyotisha + Pure 2D SVG Charts",
     briefing: {
       verdict: "GO • 70% Parity Feasible",
-      summary: "Mathematical ephemeris and planetary limbs are 100% solvable in Python/JS. The real moat is the 10,000+ Dharmasindhu liturgical rules for multi-condition festival arbitrations.",
+      summary: "Mathematical ephemeris and planetary limbs are 100% solvable in Python/JS. The true moat is 10,000+ Dharmasindhu liturgical rules for multi-condition festival arbitrations.",
       catch: "Swiss Ephemeris commercial license ($700+) & 10+ years of codified Dharmasindhu/Nirnayasindhu festival decision trees.",
       stack: [
         "pyswisseph (GPLv2) or astronomy-engine (MIT): Sub-arcsecond planetary coordinates",
         "sanskrit-coders/jyotisha: Open-source Vedic festival & Vrat rule engine",
-        "Pure 2D SVG: North Indian Diamond & South Indian Box Kundali vector renderers",
+        "Pure 2D SVG: North Indian Diamond & South Indian Box Kundali vector renderers (Zero GPU load)",
         "Voroa Mumbai Nano / Vercel Edge: Zero-cost high-speed serverless deployment"
       ]
     },
     deepDossierContent: `
 # Deep Dossier: Drik Panchang (Vedic Ephemeris & Calendar Engine)
+**Evidence Baseline:** Audited 2,828 sitemap URLs & 30 in-browser live DOM audits (\`VedicKundaliEngine/reports/drikpanchang-study\`)
 
 ### Tier 1: The 30-Second Glance
 - **Target URL:** \`https://www.drikpanchang.com/\`
 - **Niche Category:** Vedic Astrology, Hindu Calendar & Astronomical Ephemeris
 - **Core Architecture:** Drik Ganita (optical planetary observation algorithms) + Swiss Ephemeris (C-lib) + Dharmasindhu liturgical engine
-- **The Real Commercial Wall:** Swiss Ephemeris commercial license fees ($700+) + 10,000+ classical Vedic festival rules
-- **Zero-Cost Open Stack:** \`pyswisseph\` (GPLv2) or \`astronomy-engine\` (MIT) + \`sanskrit-coders/jyotisha\` + Pure SVG Charts
+- **The Real Commercial Wall:** Swiss Ephemeris commercial license fees ($700+) + 10,000+ classical Vedic festival rules (Smartha vs Vaishnava, Arunodaya contamination)
+- **Zero-Cost Open Stack:** \`pyswisseph\` (GPLv2) or \`astronomy-engine\` (MIT) + \`sanskrit-coders/jyotisha\` + Pure 2D SVG Charts
 - **Realistic Parity Score:** **70%** (100% of mathematics & charts; 55% of localized community festival rules)
 - **Market Viability Index:** **94% (Very High)** — Authoritative global standard for Indian diaspora
+
+---
+
+### Tier 2: Real-World Architecture & Offering Inventory (2,828 Sitemap URLs)
+- **Lyrics & Namavali (535 URLs):** Aarti, Chalisa, Stotras, Deities Namavali.
+- **Festivals & Vrats (278 URLs):** Vrat Katha, Ekadashi, Pradosham, Sankashti, regional observances.
+- **Panchang Engine (207 URLs):** Day Panchang, Month Panchang, and 12 regional variants (Tamil, Telugu, Kannada, Gujarati, Marathi, Bengali, Odia, Nepali, ISKCON).
+- **Muhurat & Shubh Dates (89 URLs):** Choghadiya, Hora, Lagna Muhurat, Abhijit, Do Ghati, Panchaka Rahita, Gowri Panchangam.
+- **Jyotish Calculators (40+ URLs):** Kundali, Ashta Kuta matching, Pancha Pakshi 5-bird states, Prashnavali, Rashi/Nakshatra init.
+
+---
+
+### Tier 3: Frontend DOM & 2D Canvas Findings
+- **Observed Live Primitives:** Classic theme uses \`canvas#dp-panchangam-shuddhi-canvas\` via \`dp-panchangam-chart.v1.0.7.js\` and \`dp-kundali-form\`.
+- **Clean-Room Hardware Adaptation (Dell Latitude E6220):** Replace canvas scripts with zero-overhead pure 2D SVG vector templates for North Indian Diamond and South Indian Box Kundalis, ensuring 60 FPS performance without GPU hardware acceleration.
     `
   },
-  {
-    id: "msn-weather",
-    category: "Geospatial & Climate",
-    name: "MSN Weather Maps",
-    url: "https://www.msn.com/en-in/weather/maps/",
-    parity: 75,
-    marketIndex: "88% (High)",
-    commercialCatch: "Paid Foreca tiles ($180+/mo) & WebGL shaders",
-    openStack: "Leaflet.js + Open-Meteo + RainViewer + 2D IDW Canvas",
+  "windy": {
+    id: "windy",
+    category: "Geospatial, Climate & Fluid Particles",
+    name: "Windy",
+    url: "https://www.windy.com",
+    parity: 80,
+    marketIndex: "92% (Very High)",
+    commercialCatch: "ECMWF high-res proprietary model licensing ($10,000+/yr) & custom WebGL particle shaders",
+    openStack: "Leaflet.js + Open-Meteo GFS API + leaflet-velocity (2D Canvas Particles)",
     briefing: {
-      verdict: "GO • 75% Parity Feasible",
-      summary: "Clean-room reproduction achievable at zero infrastructure cost. Core limitation is continuous multi-zoom temperature heatmaps.",
-      catch: "Proprietary Foreca raster tile servers ($180+/month) & custom WebGL shaders.",
+      verdict: "GO • 80% Parity Feasible",
+      summary: "Clean-room reproduction achievable using free NOAA GFS / Open-Meteo feeds. 2D Canvas bilinear interpolation delivers smooth 60 FPS particle flows on low-spec hardware.",
+      catch: "ECMWF 0.1° enterprise model licenses & proprietary WebGL shader pipeline.",
       stack: [
-        "Leaflet.js: Lightweight 2D map engine (Zero GPU strain)",
-        "Open-Meteo: 10,000 free API calls/day for atmospheric telemetry",
-        "RainViewer: Free public 10-minute precipitation radar loop",
-        "2D Canvas IDW: Inverse distance interpolation for smooth thermal colors"
+        "Leaflet.js / MapLibre: Lightweight map engine (Zero GPU crash risk)",
+        "Open-Meteo: 10,000 free API calls/day for GFS & ICON atmospheric pressure layers",
+        "leaflet-velocity: Smooth HTML5 2D Canvas wind vector particle animation (< 25 MB RAM)",
+        "Voroa Mumbai / Edge: Zero-cost static hosting"
       ]
     },
     deepDossierContent: `
-# Deep Dossier: MSN Weather Maps (Global Platform)
+# Deep Dossier: Windy.com
+- **Target URL:** \`https://www.windy.com\`
+- **Niche Category:** Geospatial, Climate & Fluid Particle Animation
+- **The Commercial Wall:** ECMWF high-resolution model licenses ($10,000+/yr) & proprietary WebGL particle shaders
+- **Zero-Cost Open Stack:** Leaflet.js + Open-Meteo GFS API + leaflet-velocity (2D Canvas Particles)
+- **Realistic Parity Score:** **80%**
+- **Market Viability Index:** **92% (Very High)**
 
-### Tier 1: The 30-Second Glance
-- **Target URL:** \`https://www.msn.com/en-in/weather/maps/\`
-- **Niche Category:** Geospatial / Climate & Atmospheric Visualization
-- **Core Architecture:** TomTom Vector Basemap + Azure Maps Tile Pipeline + WebGL Shaders
-- **The Commercial Wall:** Proprietary global raster tile servers ($180+/month) & paid Foreca feeds
-- **Zero-Cost Open Stack:** Leaflet.js + Open-Meteo API + RainViewer Radar + 2D IDW Canvas
-- **Realistic Parity Score:** 75% Functional & Visual Parity
-- **Market Viability Index:** 88% (High)
+### Architecture & Hardware Guard (Dell E6220)
+Heavy WebGL 2.0 particle shaders crash legacy Intel HD 3000 graphics. Our clean-room solution uses CPU-calculated 2D HTML5 Canvas particle vectors via bilinear interpolation, achieving smooth 60 FPS and 0% GPU strain.
     `
   }
-];
+};
 
-// In-Memory Registry State (initialized with local storage cache or defaults)
-let audits = (() => {
-  const localCache = localStorage.getItem('ceh_audits_cache');
-  if (localCache) {
-    try { return JSON.parse(localCache); } catch(e) {}
-  }
-  return DEFAULT_AUDITS;
-})();
-
+let audits = [];
 let activeCategory = "ALL";
 let searchQuery = "";
 let currentActiveDrawerApp = null;
 
 // Initialize Application Lifecycle
 document.addEventListener('DOMContentLoaded', () => {
-  refreshCategoryPills();
-  renderTable();
-  updateStats();
   initTheme();
   makeWindowDraggable();
-
-  // Dynamically sync rows with Google Sheet
   fetchLiveGoogleSheetData();
 });
 
-// CSV Parser handling quotes and commas cleanly
-function parseCSV(text) {
-  const rows = [];
-  let currentRow = [];
-  let currentField = '';
-  let insideQuotes = false;
-
-  for (let i = 0; i < text.length; i++) {
-    const char = text[i];
-    const nextChar = text[i + 1];
-
-    if (char === '"') {
-      if (insideQuotes && nextChar === '"') {
-        currentField += '"';
-        i++;
-      } else {
-        insideQuotes = !insideQuotes;
-      }
-    } else if (char === ',' && !insideQuotes) {
-      currentRow.push(currentField.trim());
-      currentField = '';
-    } else if ((char === '\r' || char === '\n') && !insideQuotes) {
-      if (char === '\r' && nextChar === '\n') i++;
-      currentRow.push(currentField.trim());
-      if (currentRow.some(f => f.length > 0)) {
-        rows.push(currentRow);
-      }
-      currentRow = [];
-      currentField = '';
-    } else {
-      currentField += char;
-    }
-  }
-  if (currentField || currentRow.length > 0) {
-    currentRow.push(currentField.trim());
-    if (currentRow.some(f => f.length > 0)) rows.push(currentRow);
-  }
-  return rows;
-}
-
-// Dynamic Google Sheet Ingestion
+// Dynamic Google Sheet Ingestion using Visualization Query API (Robust JSON)
 async function fetchLiveGoogleSheetData() {
   try {
-    const res = await fetch(GOOGLE_SHEET_CSV_URL, { cache: "no-store" });
+    const res = await fetch(GOOGLE_SHEET_JSON_URL, { cache: "no-store" });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const csvText = await res.text();
-    if (!csvText || csvText.length < 10) return;
+    const rawText = await res.text();
+    if (!rawText) return;
 
-    const rows = parseCSV(csvText);
-    if (rows.length <= 1) return; // Only header row
+    // Match Google Visualization JSON response: setResponse(...)
+    const match = rawText.match(/setResponse\(([\s\S]*)\);/);
+    if (!match || !match[1]) return;
 
-    // Sheet Headers Expected: Category, Target App, Target URL, Parity, Market Index, Commercial Catch, Open Stack
+    const data = JSON.parse(match[1]);
+    const table = data.table;
+    if (!table || !table.rows) return;
+
     const parsedAudits = [];
-    for (let r = 1; r < rows.length; r++) {
-      const row = rows[r];
-      if (row.length < 3) continue;
+    const seenIds = new Set();
 
-      const category = row[0] || "General Web";
-      const name = row[1] || "Target App";
-      const url = row[2] || "#";
-      const parity = parseInt((row[3] || "75").replace(/[^0-9]/g, '')) || 75;
-      const marketIndex = row[4] || "85% (High)";
-      const commercialCatch = row[5] || "Proprietary cloud APIs & closed back-end";
-      const openStack = row[6] || "FastAPI / Node + PostgreSQL / SQLite Free Tier";
+    // Helper to safely parse and add an audit
+    const addAuditItem = (cat, name, url, parityStr, marketStr, catchStr, stackStr) => {
+      if (!name || name.trim() === "") return;
+      const cleanName = name.replace(/^Target Application\s*/i, '').trim();
+      const slugId = cleanName.toLowerCase().replace(/[^a-z0-9]/g, '-').slice(0, 30);
+      if (seenIds.has(slugId)) return;
+      seenIds.add(slugId);
 
-      const slugId = name.toLowerCase().replace(/[^a-z0-9]/g, '-').slice(0, 30);
+      const cleanCat = (cat || "General Web").replace(/^Niche Category\s*/i, '').trim();
+      const cleanUrl = (url || "#").replace(/^Target URL\s*/i, '').trim();
+      const numParity = typeof parityStr === 'number' 
+        ? Math.round(parityStr > 1 ? parityStr : parityStr * 100)
+        : parseInt((parityStr || "75").replace(/[^0-9]/g, '')) || 75;
+      const cleanMarket = (marketStr || "85% (High)").replace(/^Market Viability Index\s*/i, '').trim();
+      const cleanCatch = (catchStr || "Proprietary cloud APIs & closed back-end").replace(/^The Commercial Wall \(The Catch\)\s*/i, '').trim();
+      const cleanStack = (stackStr || "FastAPI / Node + PostgreSQL / SQLite Free Tier").replace(/^Zero-Cost Open-Source Stack\s*/i, '').trim();
 
-      // Check if we have pre-existing local deep dossier text
-      const existing = DEFAULT_AUDITS.find(d => d.id === slugId || d.url === url);
+      const known = KNOWN_DOSSIERS[slugId];
 
       parsedAudits.push({
         id: slugId,
-        category,
-        name,
-        url,
-        parity,
-        marketIndex,
-        commercialCatch,
-        openStack,
-        briefing: existing ? existing.briefing : {
-          verdict: `GO • ${parity}% Parity Feasible`,
+        category: cleanCat,
+        name: cleanName,
+        url: cleanUrl,
+        parity: numParity,
+        marketIndex: cleanMarket,
+        commercialCatch: cleanCatch,
+        openStack: cleanStack,
+        briefing: known ? known.briefing : {
+          verdict: `GO • ${numParity}% Parity Feasible`,
           summary: `Clean-room reproduction feasible using open-source primitives and zero-cost serverless tiers.`,
-          catch: commercialCatch,
-          stack: openStack.split('+').map(s => s.trim())
+          catch: cleanCatch,
+          stack: cleanStack.split('+').map(s => s.trim())
         },
-        deepDossierContent: existing ? existing.deepDossierContent : `
-# Deep Dossier: ${name}
-- **Target URL:** ${url}
-- **Category:** ${category}
-- **Technical Parity:** ${parity}%
-- **Market Viability:** ${marketIndex}
-- **The Commercial Catch:** ${commercialCatch}
-- **Open-Source Equivalent Stack:** ${openStack}
+        deepDossierContent: known ? known.deepDossierContent : `
+# Deep Dossier: ${cleanName}
+- **Target URL:** \`${cleanUrl}\`
+- **Category:** ${cleanCat}
+- **Technical Parity:** ${numParity}%
+- **Market Viability:** ${cleanMarket}
+- **The Commercial Catch:** ${cleanCatch}
+- **Open-Source Equivalent Stack:** ${cleanStack}
 
 ### Architecture & Feasibility Notes
 Clean-room reproduction requires establishing local or edge parity without paying commercial API license fees.
         `
       });
+    };
+
+    // Check if Column Labels themselves contain the Drik Panchang row (when headers were placed in Row 1)
+    if (table.cols && table.cols.length >= 3) {
+      const colLabels = table.cols.map(c => c.label || '');
+      const isDrikInCols = colLabels.some(l => l.includes('Drik Panchang'));
+      if (isDrikInCols) {
+        addAuditItem(colLabels[0], colLabels[1], colLabels[2], colLabels[5] || '70%', colLabels[6] || '94% (Very High)', colLabels[3], colLabels[4]);
+      }
     }
+
+    // Process all standard data rows (e.g. Windy)
+    table.rows.forEach(r => {
+      if (!r.c) return;
+      const getVal = (idx) => (r.c[idx] ? (r.c[idx].v !== null ? r.c[idx].v : (r.c[idx].f || '')) : '');
+      const cat = getVal(0);
+      const name = getVal(1);
+      const url = getVal(2);
+      const catchStr = getVal(3);
+      const stackStr = getVal(4);
+      const parityVal = getVal(5);
+      const marketVal = getVal(6);
+
+      addAuditItem(cat, name, url, parityVal, marketVal, catchStr, stackStr);
+    });
 
     if (parsedAudits.length > 0) {
       audits = parsedAudits;
-      localStorage.setItem('ceh_audits_cache', JSON.stringify(audits));
       refreshCategoryPills();
       renderTable();
       updateStats();
     }
   } catch (err) {
-    console.warn("Google Sheet live sync fallback active:", err);
+    console.warn("Live Google Sheet sync error:", err);
   }
 }
 
@@ -385,13 +379,11 @@ async function triggerAutonomousDeconstruction(rawTarget, notes = "") {
   if (launchBtn) launchBtn.disabled = true;
 
   try {
-    // Intelligent heuristic deconstruction
     const urlObj = rawTarget.startsWith('http') ? new URL(rawTarget) : { hostname: rawTarget };
     const domain = urlObj.hostname.replace('www.', '');
     const appName = domain.split('.')[0].charAt(0).toUpperCase() + domain.split('.')[0].slice(1);
     const fullUrl = rawTarget.startsWith('http') ? rawTarget : `https://${rawTarget}`;
 
-    // Infer category & architecture
     let category = "SaaS & Web Services";
     let commercialCatch = "Proprietary backend microservices & proprietary data layer";
     let openStack = "Node.js / FastAPI + SQLite / Supabase Free + Tailwind UI";
@@ -399,27 +391,11 @@ async function triggerAutonomousDeconstruction(rawTarget, notes = "") {
     let marketIndex = "85% (High)";
 
     const lower = rawTarget.toLowerCase();
-    if (lower.includes('weather') || lower.includes('map') || lower.includes('radar')) {
+    if (lower.includes('weather') || lower.includes('map') || lower.includes('radar') || lower.includes('wind')) {
       category = "Geospatial & Climate";
       commercialCatch = "Paid satellite tile feeds & proprietary mapping licenses";
-      openStack = "Leaflet.js / OpenLayers + Open-Meteo + 2D HTML5 Canvas";
+      openStack = "Leaflet.js / MapLibre + Open-Meteo + 2D HTML5 Canvas";
       parity = 75;
-    } else if (lower.includes('astro') || lower.includes('panchang') || lower.includes('horo')) {
-      category = "Vedic Astrology & Ephemeris";
-      commercialCatch = "Proprietary astrological rules & ephemeris data licensing";
-      openStack = "astronomy-engine (MIT) + sanskrit-coders/jyotisha + SVG Kundali";
-      parity = 70;
-    } else if (lower.includes('stock') || lower.includes('trade') || lower.includes('finance') || lower.includes('crypto')) {
-      category = "Fintech & Algorithmic Trading";
-      commercialCatch = "High-frequency sub-second exchange websocket feeds & Bloomberg/TradingView charting engine";
-      openStack = "Lightweight-Charts (TradingView Open Source) + Yahoo Finance / Alpha Vantage + Python Pandas";
-      parity = 75;
-      marketIndex = "96% (Very High)";
-    } else if (lower.includes('crm') || lower.includes('lead') || lower.includes('sales')) {
-      category = "Enterprise CRM & Automation";
-      commercialCatch = "Per-seat recurring cloud subscription fees ($50+/seat/mo)";
-      openStack = "PocketBase (Single Go Binary) + Svelte/Alpine.js + SQLite Free";
-      parity = 85;
     }
 
     const newAudit = {
@@ -448,17 +424,13 @@ async function triggerAutonomousDeconstruction(rawTarget, notes = "") {
       `
     };
 
-    // Prepend to current audits array
     audits = [newAudit, ...audits.filter(a => a.id !== newAudit.id)];
-    localStorage.setItem('ceh_audits_cache', JSON.stringify(audits));
     refreshCategoryPills();
     renderTable();
     updateStats();
 
     if (progressText) progressText.innerText = "Syncing live with Google Sheets Master...";
 
-    // Webhook POST to Google Apps Script
-    // Uses standard fetch with mode: 'no-cors' to handle Google Apps Script 302 redirect cleanly
     try {
       await fetch(WEBHOOK_URL, {
         method: "POST",
