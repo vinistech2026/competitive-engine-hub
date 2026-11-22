@@ -1464,7 +1464,16 @@ function openDocDrawer(appId, tab) {
   }
 
   const mdPane = document.getElementById('dossierMarkdownContent');
-  mdPane.innerHTML = `<pre style="white-space: pre-wrap; font-family: inherit;">${app.deepDossierContent || 'Detailed dossier loading...'}</pre>`;
+  const rawContent = app.deepDossierContent || 'Detailed dossier loading...';
+  if (typeof marked !== 'undefined' && marked.parse) {
+    try {
+      mdPane.innerHTML = marked.parse(rawContent);
+    } catch (e) {
+      mdPane.innerHTML = `<pre style="white-space: pre-wrap; font-family: inherit;">${rawContent}</pre>`;
+    }
+  } else {
+    mdPane.innerHTML = `<pre style="white-space: pre-wrap; font-family: inherit;">${rawContent}</pre>`;
+  }
 
   switchDrawerTab(tab || 'briefing');
   document.getElementById('docDrawer').classList.add('active');
